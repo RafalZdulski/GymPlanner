@@ -42,10 +42,14 @@ public class DrawerManager {
         final Item summaryItem = new ViewItem("Summary",
                 MaterialDesignIcon.ADD_BOX.graphic(), SUMMARY_VIEW);
 
+        final Item exercisesDBItem = new ViewItem("Exercise Database",
+                MaterialDesignIcon.DNS.graphic(), EXERCISES_DB_VIEW);
+
 
         drawer.getItems().addAll(
                 dashboardItem, quickWorkoutItem, calendarItem,
-                trainingPlansItem, workoutsItem, summaryItem
+                trainingPlansItem, workoutsItem, summaryItem,
+                exercisesDBItem
         );
         
         if (Platform.isDesktop()) {

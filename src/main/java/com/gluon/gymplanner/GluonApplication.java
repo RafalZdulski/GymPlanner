@@ -18,6 +18,7 @@ public class GluonApplication extends Application {
     public static final String TRAINING_PLANS_VIEW = "Training Plans View";
     public static final String YOUR_WORKOUTS_VIEW = "Your Workouts View";
     public static final String SUMMARY_VIEW = "Summary View";
+    public static final String EXERCISES_DB_VIEW = "Exercise DB View";
 
     private final AppManager appManager = AppManager.initialize(this::postInit);
 
@@ -29,6 +30,7 @@ public class GluonApplication extends Application {
         appManager.addViewFactory(TRAINING_PLANS_VIEW, () -> new TrainingPlansView().getView());
         appManager.addViewFactory(YOUR_WORKOUTS_VIEW, () -> new YourWorkoutsView().getView());
         appManager.addViewFactory(SUMMARY_VIEW, () -> new SummaryView().getView());
+        appManager.addViewFactory(EXERCISES_DB_VIEW, () -> new ExerciseDBView().getView());
 
         DrawerManager.buildDrawer(appManager);
     }
@@ -36,13 +38,14 @@ public class GluonApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         appManager.start(primaryStage);
+        primaryStage.setResizable(false);
     }
 
     private void postInit(Scene scene) {
-        Swatch.BLUE.assignTo(scene);
+        Swatch.GREY.assignTo(scene);
 
-        scene.getStylesheets().add(GluonApplication.class.getResource("style.css").toExternalForm());
-        ((Stage) scene.getWindow()).getIcons().add(new Image(GluonApplication.class.getResourceAsStream("/com/gluon/gymplanner/icons/icon.png")));
+        scene.getStylesheets().add(GluonApplication.class.getResource("/com/gluon/gymplanner/views/css/style.css").toExternalForm());
+        ((Stage) scene.getWindow()).getIcons().add(new Image(GluonApplication.class.getResourceAsStream("/com/gluon/gymplanner/icons/dumbbell-logo.png")));
     }
 
     public static void main(String args[]) {

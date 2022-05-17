@@ -19,6 +19,8 @@ public class GluonApplication extends Application {
     public static final String YOUR_WORKOUTS_VIEW = "Your Workouts View";
     public static final String SUMMARY_VIEW = "Summary View";
     public static final String EXERCISES_DB_VIEW = "Exercise DB View";
+    public static final String EXERCISES_VIEW = "Exercise View";
+
 
     private final AppManager appManager = AppManager.initialize(this::postInit);
 
@@ -31,6 +33,8 @@ public class GluonApplication extends Application {
         appManager.addViewFactory(YOUR_WORKOUTS_VIEW, () -> new YourWorkoutsView().getView());
         appManager.addViewFactory(SUMMARY_VIEW, () -> new SummaryView().getView());
         appManager.addViewFactory(EXERCISES_DB_VIEW, () -> new ExerciseDBView().getView());
+        //appManager.addViewFactory(EXERCISES_VIEW, () -> new ExerciseView().getView());
+
 
         DrawerManager.buildDrawer(appManager);
     }

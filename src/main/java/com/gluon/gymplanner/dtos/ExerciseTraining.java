@@ -1,42 +1,34 @@
 package com.gluon.gymplanner.dtos;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class ExerciseTraining {
-    final ExerciseDetails exercise;
-    int repsPlanned;
-    int repsDone;
-    double weight; // in kilograms
+    private final ExerciseDetails exercise;
+    private List<ExerciseSeries> series;
 
     public ExerciseTraining(ExerciseDetails exercise) {
         this.exercise = exercise;
+        series = new LinkedList<>();
     }
 
-    //***** SETTERS *****//
-
-    public void setRepsPlanned(int repsPlanned) {
-        this.repsPlanned = repsPlanned;
+    public ExerciseTraining(ExerciseDetails exercise, List<ExerciseSeries> series){
+        this.exercise = exercise;
+        this.series = new LinkedList<>(series);
     }
 
-    public void setRepsDone(int repsDone) {
-        this.repsDone = repsDone;
+    public void addSeries(double weight, int reps){
+        series.add(new ExerciseSeries(weight,reps));
     }
 
-    public void setWeight(double weight) {
-        this.weight = weight;
+    public void setSeries(List<ExerciseSeries> series){
+        this.series = series;
     }
-
 
     //***** GETTERS *****//
 
-    public int getRepsPlanned() {
-        return repsPlanned;
-    }
-
-    public int getRepsDone() {
-        return repsDone;
-    }
-
-    public double getWeight() {
-        return weight;
+    public List<ExerciseSeries> getSeriesList() {
+        return series;
     }
 
     public String getName() {

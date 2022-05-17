@@ -3,13 +3,13 @@ package com.gluon.gymplanner.factories;
 import com.gluon.gymplanner.GluonApplication;
 import com.gluon.gymplanner.dtos.ExerciseDetails;
 import com.gluon.gymplanner.dtos.ExerciseTraining;
+import com.gluon.gymplanner.graphic.SeriesView;
 import com.gluon.gymplanner.presenters.ExercisePresenter;
 import com.gluon.gymplanner.presenters.QuickWorkoutPresenter;
 import com.gluon.gymplanner.views.ExerciseView;
 import com.gluon.gymplanner.views.QuickWorkoutView;
 import com.gluonhq.charm.glisten.control.BottomNavigation;
 import com.gluonhq.charm.glisten.control.BottomNavigationButton;
-import com.gluonhq.charm.glisten.control.TextField;
 import com.gluonhq.charm.glisten.layout.layer.PopupView;
 import com.gluonhq.charm.glisten.layout.layer.SidePopupView;
 import com.gluonhq.charm.glisten.mvc.View;
@@ -18,6 +18,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -62,17 +63,20 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
             }
         };
 
+
         cell.addEventHandler(MouseEvent.MOUSE_RELEASED, e ->{
-            //System.out.println("\tClicked on:" + cell.getItem());
-            ExerciseView  exerciseView = new ExerciseView();
-            View sidePopupContent = exerciseView.getView();
-            ExercisePresenter presenter = (ExercisePresenter) exerciseView.getPresenter();
-            presenter.setExercise(cell.getItem());
+            if(!cell.isEmpty()) {
+                //System.out.println("\tClicked on:" + cell.getItem());
+                ExerciseView exerciseView = new ExerciseView();
+                View sidePopupContent = exerciseView.getView();
+                ExercisePresenter presenter = (ExercisePresenter) exerciseView.getPresenter();
+                presenter.setExercise(cell.getItem());
 
-            SidePopupView sidePopupView = new SidePopupView(sidePopupContent);
-            sidePopupContent.setBottom(getBottomNavigation(sidePopupView,cell.getItem()));
+                SidePopupView sidePopupView = new SidePopupView(sidePopupContent);
+                sidePopupContent.setBottom(getBottomNavigation(sidePopupView, cell.getItem()));
 
-            sidePopupView.show();
+                sidePopupView.show();
+            }
         });
 
         return cell;
@@ -87,8 +91,8 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
         retBtn.setOnAction(e -> sidePopupView.hide());
 
         BottomNavigationButton favBtn = new BottomNavigationButton();
-        favBtn.setGraphic(MaterialDesignIcon.FAVORITE.graphic());
-        //TODO implement adding exercise to favourite and removing it
+        favBtn.setGraphic(MaterialDesignIcon.FAVORITE_BORDER.graphic());
+        //TODO ADD: adding exercise to favourite and removing it
         favBtn.setOnAction(e -> System.err.println("add exercise to favourites not implemented"));
 
         BottomNavigationButton addBtn = new BottomNavigationButton();
@@ -102,33 +106,25 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
 
     private void showPopupAddToQuickWorkout(SidePopupView sidePopupView, ExerciseDetails exerciseDetails) {
         PopupView popupView = new PopupView(sidePopupView);
-        popupView.setLayoutY(200);
-        popupView.setLayoutX(100);
+        popupView.setLayoutY(150);
+        popupView.setLayoutX(50);
 
         //popup content
         View content = new View();
-        content.setPrefHeight(200);
-        content.setPrefWidth(150);
-
-        TextField weightTxtField = new TextField();
-        weightTxtField.setPromptText("weight (kg)");
-        TextField repsPlannedTxtField = new TextField();
-        repsPlannedTxtField.setPromptText("reps planned");
-        TextField repsDoneTxtField = new TextField();
-        repsDoneTxtField.setPromptText("reps done");
-
-        VBox vBox = new VBox(weightTxtField, repsPlannedTxtField, repsDoneTxtField);
-        vBox.setPadding(new Insets(15));
-        vBox.setSpacing(20);
-
-        content.setCenter(vBox);
+        content.setPrefHeight(300);
+        content.setPrefWidth(250);
+        SeriesView seriesView = new SeriesView();
+        ScrollPane scrollPane = new ScrollPane(seriesView);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        content.setCenter(scrollPane);
 
         BottomNavigationButton addBtn = new BottomNavigationButton();
         addBtn.setGraphic(MaterialDesignIcon.ADD.graphic());
         addBtn.setOnAction(e -> {
-            ExerciseTraining exerciseTraining = getExerciseTraining(
-                    exerciseDetails, weightTxtField, repsPlannedTxtField, repsDoneTxtField);
-            addToQuickWorkout(popupView, exerciseTraining);
+            ExerciseTraining exerciseTraining = new ExerciseTraining(exerciseDetails);
+            exerciseTraining.setSeries(seriesView.getSeries());
+            addToQuickWorkout(exerciseTraining);
+            popupView.hide();
         });
 
         BottomNavigationButton retBtn = new BottomNavigationButton();
@@ -145,50 +141,10 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
         popupView.show();
     }
 
-    private ExerciseTraining getExerciseTraining(ExerciseDetails details, TextField weightTxtField, TextField repsPlannedTxtField, TextField repsDoneTxtField){
-        ExerciseTraining exercise = new ExerciseTraining(details);
-        double weightVal = 0;
-        if (!weightTxtField.getText().isEmpty())
-            try{
-                weightVal = Double.parseDouble(weightTxtField.getText());
-            }catch (NumberFormatException e ){
-                //TODO add validation of input data
-            }
-
-
-        int repsPlannedVal = 0;
-        if (!repsPlannedTxtField.getText().isEmpty())
-            try{
-                repsPlannedVal = Integer.parseInt(repsPlannedTxtField.getText());
-            }catch (NumberFormatException e ){
-                //TODO add validation of input data
-            }
-
-        int repsDoneVal = 0;
-        if (!repsDoneTxtField.getText().isEmpty())
-            try{
-                repsDoneVal = Integer.parseInt(repsDoneTxtField.getText());
-            }catch (NumberFormatException e ){
-                //TODO add validation of input data
-            }
-
-        exercise.setWeight(weightVal);
-        exercise.setRepsPlanned(repsPlannedVal);
-        exercise.setRepsDone(repsDoneVal);
-
-//        System.out.println(exercise.getName());
-//        System.out.println(weightVal);
-//        System.out.println(repsDoneVal);
-//        System.out.println(repsPlannedVal);
-
-        return exercise;
-    }
-
-    private void addToQuickWorkout(PopupView popupView, ExerciseTraining exercise) {
+    private void addToQuickWorkout(ExerciseTraining exercise) {
         QuickWorkoutView view = (QuickWorkoutView) GluonApplication.getView(GluonApplication.QUICK_WORKOUT_VIEW);
         QuickWorkoutPresenter presenter = (QuickWorkoutPresenter) view.getPresenter();
         presenter.addExercise(exercise);
         //TODO ADD: popup message confirming exercise was added to quick workout
-        popupView.hide();
     }
 }

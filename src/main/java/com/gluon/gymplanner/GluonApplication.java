@@ -27,29 +27,33 @@ public class GluonApplication extends Application {
     public static final String EXERCISES_DB_VIEW = "Exercise DB View";
     public static final String EXERCISES_VIEW = "Exercise View";
 
-    private static Map<String, ViewInt> viewMap;
+    private static final Map<String, ViewInt> viewMap = new HashMap<>();
 
     private final AppManager appManager = AppManager.initialize(this::postInit);
 
     @Override
     public void init() {
-        viewMap = new HashMap<>();
-        appManager.addViewFactory(DASHBOARD_VIEW, () -> getView(DASHBOARD_VIEW, new DashboardView()));
-        appManager.addViewFactory(QUICK_WORKOUT_VIEW, () -> getView(QUICK_WORKOUT_VIEW, new QuickWorkoutView()));
-        appManager.addViewFactory(CALENDAR_VIEW, () -> getView(CALENDAR_VIEW, new CalendarView()));
-        appManager.addViewFactory(TRAINING_PLANS_VIEW, () -> getView(TRAINING_PLANS_VIEW, new TrainingPlansView()));
-        appManager.addViewFactory(YOUR_WORKOUTS_VIEW, () -> getView(YOUR_WORKOUTS_VIEW, new YourWorkoutsView()));
-        appManager.addViewFactory(SUMMARY_VIEW, () -> getView(SUMMARY_VIEW, new SummaryView()));
-        appManager.addViewFactory(EXERCISES_DB_VIEW, () -> getView(EXERCISES_DB_VIEW, new ExerciseDBView()));
+        initViewMap();
+        appManager.addViewFactory(DASHBOARD_VIEW, () -> getView(DASHBOARD_VIEW).getView());
+        appManager.addViewFactory(QUICK_WORKOUT_VIEW, () -> getView(QUICK_WORKOUT_VIEW).getView());
+        appManager.addViewFactory(CALENDAR_VIEW, () -> getView(CALENDAR_VIEW).getView());
+        appManager.addViewFactory(TRAINING_PLANS_VIEW, () -> getView(TRAINING_PLANS_VIEW).getView());
+        appManager.addViewFactory(YOUR_WORKOUTS_VIEW, () -> getView(YOUR_WORKOUTS_VIEW).getView());
+        appManager.addViewFactory(SUMMARY_VIEW, () -> getView(SUMMARY_VIEW).getView());
+        appManager.addViewFactory(EXERCISES_DB_VIEW, () -> getView(EXERCISES_DB_VIEW).getView());
         //appManager.addViewFactory(EXERCISES_VIEW, () -> new ExerciseView().getView());
-
 
         DrawerManager.buildDrawer(appManager);
     }
 
-    private View getView(String viewName, ViewInt view) {
-        viewMap.put(viewName, view);
-        return view.getView();
+    private void initViewMap() {
+        viewMap.put(DASHBOARD_VIEW, new DashboardView());
+        viewMap.put(QUICK_WORKOUT_VIEW, new QuickWorkoutView());
+        viewMap.put(CALENDAR_VIEW, new CalendarView());
+        viewMap.put(TRAINING_PLANS_VIEW, new TrainingPlansView());
+        viewMap.put(YOUR_WORKOUTS_VIEW, new YourWorkoutsView());
+        viewMap.put(SUMMARY_VIEW, new SummaryView());
+        viewMap.put(EXERCISES_DB_VIEW, new ExerciseDBView());
     }
 
     @Override

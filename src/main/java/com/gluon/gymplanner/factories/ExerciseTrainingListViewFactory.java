@@ -36,22 +36,24 @@ public class ExerciseTrainingListViewFactory implements Callback<ListView<Exerci
                     description.setSpacing(7);
                     description.setPadding(new Insets(5,0,5,5));
 
-                    GridPane gridPane = new GridPane();
-                    gridPane.add(new Text("Weight:"),0,0);
-                    gridPane.add(new Text(String.valueOf(item.getWeight())),0,1);
-                    gridPane.add(new Text("reps planned"),1,0);
-                    gridPane.add(new Text(String.valueOf(item.getWeight())),1,1);
-                    gridPane.add(new Text("reps done"),2,0);
-                    gridPane.add(new Text(String.valueOf(item.getWeight())),2,1);
+//                    GridPane gridPane = new GridPane();
+//                    gridPane.add(new Text("Weight:"),0,0);
+//                    gridPane.add(new Text(String.valueOf(item.getWeight())),0,1);
+//                    gridPane.add(new Text("reps planned"),1,0);
+//                    gridPane.add(new Text(String.valueOf(item.getWeight())),1,1);
+//                    gridPane.add(new Text("reps done"),2,0);
+//                    gridPane.add(new Text(String.valueOf(item.getWeight())),2,1);
 
 
-                    setGraphic(new VBox(name, new HBox(description, gridPane)));
+                    setGraphic(new VBox(name, new VBox(description)));
                 }
             }
         };
 
         cell.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
-            System.out.println("\tClicked on: (edit)" + cell.getItem().getName());
+            if(!cell.isEmpty()) {
+                System.out.println("\tClicked on: (edit)" + cell.getItem().getName());
+            }
         });
 
         return cell;

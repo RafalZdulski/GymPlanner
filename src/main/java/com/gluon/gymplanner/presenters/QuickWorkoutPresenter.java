@@ -1,13 +1,17 @@
 package com.gluon.gymplanner.presenters;
 
+import com.gluon.gymplanner.GluonApplication;
 import com.gluon.gymplanner.dtos.ExerciseTraining;
+import com.gluon.gymplanner.dtos.Workout;
 import com.gluon.gymplanner.factories.ExerciseTrainingListViewFactory;
 import com.gluonhq.charm.glisten.animation.BounceInRightTransition;
 import com.gluonhq.charm.glisten.application.AppManager;
+import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.control.FloatingActionButton;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,7 +22,7 @@ import java.util.List;
 
 public class QuickWorkoutPresenter {
 
-    private List<ExerciseTraining> exerciseList = new ArrayList<>();
+    private Workout workout = new Workout();
 
     @FXML
     private View secondary;
@@ -30,7 +34,7 @@ public class QuickWorkoutPresenter {
         secondary.setShowTransitionFactory(BounceInRightTransition::new);
 
         FloatingActionButton floatingAddBtn = new FloatingActionButton(MaterialDesignIcon.ADD.text, e -> {
-            System.out.println("Add exercise ----");
+            GluonApplication.switchView(GluonApplication.EXERCISES_DB_VIEW);
         });
         floatingAddBtn.showOn(secondary);
         
@@ -42,12 +46,20 @@ public class QuickWorkoutPresenter {
 
                 appBar.setTitleText("Quick Workout");
 
+                //TODO add saving quick workout to your workouts
                 appBar.getActionItems().add(MaterialDesignIcon.SAVE.button(e ->
                         System.out.println("to implement: save this workout in your workouts")));
             }
         });
 
-        exerciseListView.setItems(FXCollections.observableList(exerciseList));
+        exerciseListView.setItems(FXCollections.observableList(workout.getTrainingList()));
         exerciseListView.setCellFactory(new ExerciseTrainingListViewFactory());
+    }
+
+    public void addExercise(ExerciseTraining exercise){
+        workout.addExercise(exercise);
+        System.out.println("Exercise: " + exercise.getName() + " added to Quick Workout");
+        //TODO QUESTION: why does require initialization and how to avoid the necessity?
+        initialize();
     }
 }

@@ -1,8 +1,10 @@
 package com.gluon.gymplanner.factories;
 
+import com.gluon.gymplanner.GluonApplication;
 import com.gluon.gymplanner.dtos.ExerciseDetails;
 import com.gluon.gymplanner.dtos.ExerciseTraining;
 import com.gluon.gymplanner.views.ExerciseView;
+import com.gluon.gymplanner.views.QuickWorkoutView;
 import com.gluonhq.charm.glisten.control.BottomNavigation;
 import com.gluonhq.charm.glisten.control.BottomNavigationButton;
 import com.gluonhq.charm.glisten.control.TextField;
@@ -123,7 +125,7 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
         addBtn.setOnAction(e -> {
             ExerciseTraining exerciseTraining = getExerciseTraining(
                     exerciseDetails, weightTxtField, repsPlannedTxtField, repsDoneTxtField);
-            addToQuickWorkout(exerciseTraining);
+            addToQuickWorkout(popupView, exerciseTraining);
         });
 
         BottomNavigationButton retBtn = new BottomNavigationButton();
@@ -155,13 +157,17 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
         if (!repsPlannedTxtField.getText().isEmpty())
             try{
                 repsPlannedVal = Integer.parseInt(repsPlannedTxtField.getText());
-            }catch (NumberFormatException e ){}
+            }catch (NumberFormatException e ){
+                //TODO add validation of input data
+            }
 
         int repsDoneVal = 0;
         if (!repsDoneTxtField.getText().isEmpty())
             try{
                 repsDoneVal = Integer.parseInt(repsDoneTxtField.getText());
-            }catch (NumberFormatException e ){}
+            }catch (NumberFormatException e ){
+                //TODO add validation of input data
+            }
 
         exercise.setWeight(weightVal);
         exercise.setRepsPlanned(repsPlannedVal);
@@ -175,8 +181,9 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
         return exercise;
     }
 
-    private void addToQuickWorkout(ExerciseTraining exercise) {
-
-
+    private void addToQuickWorkout(PopupView popupView, ExerciseTraining exercise) {
+        QuickWorkoutView view = GluonApplication.getQuickWorkoutView();
+        view.getPresenter().addExercise(exercise);
+        popupView.hide();
     }
 }

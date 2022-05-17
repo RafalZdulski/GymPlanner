@@ -1,18 +1,30 @@
 package com.gluon.gymplanner.views;
 
+import com.gluon.gymplanner.presenters.QuickWorkoutPresenter;
 import com.gluonhq.charm.glisten.mvc.View;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 
 public class QuickWorkoutView {
-    
-    public View getView() {
+
+    View view;
+    QuickWorkoutPresenter presenter;
+
+    public QuickWorkoutView(){
+        FXMLLoader loader = new FXMLLoader(ExerciseView.class.getResource("fxmls/quick-workout.fxml"));
         try {
-            View view = FXMLLoader.load(QuickWorkoutView.class.getResource("fxmls/quick-workout.fxml"));
-            return view;
+            view = loader.load();
+            presenter = loader.getController();
         } catch (IOException e) {
-            System.out.println("IOException: " + e);
-            return new View();
+            e.printStackTrace();
         }
+    }
+
+    public View getView() {
+        return view;
+    }
+
+    public QuickWorkoutPresenter getPresenter(){
+        return presenter;
     }
 }

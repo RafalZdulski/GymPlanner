@@ -2,13 +2,17 @@ package com.gluon.gymplanner;
 
 import com.gluon.gymplanner.views.*;
 import com.gluonhq.charm.glisten.application.AppManager;
+import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.Swatch;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.util.Optional;
+
 import static com.gluonhq.charm.glisten.application.AppManager.HOME_VIEW;
+import static com.gluonhq.charm.glisten.application.AppManager.getInstance;
 
 public class GluonApplication extends Application {
 
@@ -21,13 +25,14 @@ public class GluonApplication extends Application {
     public static final String EXERCISES_DB_VIEW = "Exercise DB View";
     public static final String EXERCISES_VIEW = "Exercise View";
 
+    private static QuickWorkoutView quickWorkoutView = new QuickWorkoutView();
 
     private final AppManager appManager = AppManager.initialize(this::postInit);
 
     @Override
     public void init() {
         appManager.addViewFactory(DASHBOARD_VIEW, () -> new DashboardView().getView());
-        appManager.addViewFactory(QUICK_WORKOUT_VIEW, () -> new QuickWorkoutView().getView());
+        appManager.addViewFactory(QUICK_WORKOUT_VIEW, () -> quickWorkoutView.getView());
         appManager.addViewFactory(CALENDAR_VIEW, () -> new CalendarView().getView());
         appManager.addViewFactory(TRAINING_PLANS_VIEW, () -> new TrainingPlansView().getView());
         appManager.addViewFactory(YOUR_WORKOUTS_VIEW, () -> new YourWorkoutsView().getView());
@@ -54,5 +59,14 @@ public class GluonApplication extends Application {
 
     public static void main(String args[]) {
         launch(args);
+    }
+
+
+    public static void switchView(String viewName){
+        getInstance().switchView(viewName);
+    }
+
+    public static QuickWorkoutView getQuickWorkoutView(){
+        return quickWorkoutView;
     }
 }

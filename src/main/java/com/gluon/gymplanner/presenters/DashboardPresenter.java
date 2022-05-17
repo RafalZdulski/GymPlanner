@@ -8,7 +8,7 @@ import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class DashboardPresenter {
+public class DashboardPresenter implements Presenter{
 
     @FXML
     private View primary;

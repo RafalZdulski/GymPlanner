@@ -20,7 +20,7 @@ import javafx.scene.control.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuickWorkoutPresenter {
+public class QuickWorkoutPresenter implements Presenter{
 
     private Workout workout = new Workout();
 
@@ -46,7 +46,7 @@ public class QuickWorkoutPresenter {
 
                 appBar.setTitleText("Quick Workout");
 
-                //TODO add saving quick workout to your workouts
+                //TODO ADD: saving quick workout to your workouts
                 appBar.getActionItems().add(MaterialDesignIcon.SAVE.button(e ->
                         System.out.println("to implement: save this workout in your workouts")));
             }
@@ -59,7 +59,7 @@ public class QuickWorkoutPresenter {
     public void addExercise(ExerciseTraining exercise){
         workout.addExercise(exercise);
         System.out.println("Exercise: " + exercise.getName() + " added to Quick Workout");
-        //TODO QUESTION: why does require initialization and how to avoid the necessity?
-        initialize();
+        //TODO FIX problem: without setting items again it does not display exercises added after initializing quick workout view
+        exerciseListView.setItems(FXCollections.observableList(workout.getTrainingList()));
     }
 }

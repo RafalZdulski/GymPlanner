@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 
 import java.util.Arrays;
 
-public class ExercisePresenter {
+public class ExercisePresenter implements Presenter{
 
     private ExerciseDetails exercise;
 

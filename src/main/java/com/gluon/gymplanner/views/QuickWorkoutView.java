@@ -1,11 +1,12 @@
 package com.gluon.gymplanner.views;
 
+import com.gluon.gymplanner.presenters.Presenter;
 import com.gluon.gymplanner.presenters.QuickWorkoutPresenter;
 import com.gluonhq.charm.glisten.mvc.View;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 
-public class QuickWorkoutView {
+public class QuickWorkoutView implements ViewInt{
 
     View view;
     QuickWorkoutPresenter presenter;
@@ -20,11 +21,13 @@ public class QuickWorkoutView {
         }
     }
 
+    @Override
     public View getView() {
         return view;
     }
 
-    public QuickWorkoutPresenter getPresenter(){
+    @Override
+    public Presenter getPresenter(){
         return presenter;
     }
 }

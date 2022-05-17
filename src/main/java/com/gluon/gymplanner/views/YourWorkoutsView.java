@@ -1,19 +1,34 @@
 package com.gluon.gymplanner.views;
 
+import com.gluon.gymplanner.presenters.Presenter;
+import com.gluon.gymplanner.presenters.QuickWorkoutPresenter;
 import com.gluonhq.charm.glisten.mvc.View;
 import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
 
-public class YourWorkoutsView {
-    
-    public View getView() {
+public class YourWorkoutsView implements ViewInt{
+
+    View view;
+    QuickWorkoutPresenter presenter;
+
+    public YourWorkoutsView(){
+        FXMLLoader loader = new FXMLLoader(ExerciseView.class.getResource("fxmls/your-workouts.fxml"));
         try {
-            View view = FXMLLoader.load(YourWorkoutsView.class.getResource("fxmls/your-workouts.fxml"));
-            return view;
+            view = loader.load();
+            presenter = loader.getController();
         } catch (IOException e) {
-            System.out.println("IOException: " + e);
-            return new View();
+            e.printStackTrace();
         }
+    }
+
+    @Override
+    public View getView() {
+        return view;
+    }
+
+    @Override
+    public Presenter getPresenter(){
+        return presenter;
     }
 }

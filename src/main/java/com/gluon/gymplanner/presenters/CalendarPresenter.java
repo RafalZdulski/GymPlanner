@@ -8,7 +8,7 @@ import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import javafx.fxml.FXML;
 
-public class CalendarPresenter {
+public class CalendarPresenter implements Presenter{
 
     @FXML
     private View secondary;

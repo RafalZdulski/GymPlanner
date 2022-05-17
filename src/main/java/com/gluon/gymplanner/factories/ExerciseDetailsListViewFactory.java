@@ -3,6 +3,8 @@ package com.gluon.gymplanner.factories;
 import com.gluon.gymplanner.GluonApplication;
 import com.gluon.gymplanner.dtos.ExerciseDetails;
 import com.gluon.gymplanner.dtos.ExerciseTraining;
+import com.gluon.gymplanner.presenters.ExercisePresenter;
+import com.gluon.gymplanner.presenters.QuickWorkoutPresenter;
 import com.gluon.gymplanner.views.ExerciseView;
 import com.gluon.gymplanner.views.QuickWorkoutView;
 import com.gluonhq.charm.glisten.control.BottomNavigation;
@@ -64,7 +66,8 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
             //System.out.println("\tClicked on:" + cell.getItem());
             ExerciseView  exerciseView = new ExerciseView();
             View sidePopupContent = exerciseView.getView();
-            exerciseView.getPresenter().setExercise(cell.getItem());
+            ExercisePresenter presenter = (ExercisePresenter) exerciseView.getPresenter();
+            presenter.setExercise(cell.getItem());
 
             SidePopupView sidePopupView = new SidePopupView(sidePopupContent);
             sidePopupContent.setBottom(getBottomNavigation(sidePopupView,cell.getItem()));
@@ -182,8 +185,10 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
     }
 
     private void addToQuickWorkout(PopupView popupView, ExerciseTraining exercise) {
-        QuickWorkoutView view = GluonApplication.getQuickWorkoutView();
-        view.getPresenter().addExercise(exercise);
+        QuickWorkoutView view = (QuickWorkoutView) GluonApplication.getView(GluonApplication.QUICK_WORKOUT_VIEW);
+        QuickWorkoutPresenter presenter = (QuickWorkoutPresenter) view.getPresenter();
+        presenter.addExercise(exercise);
+        //TODO ADD: popup message confirming exercise was added to quick workout
         popupView.hide();
     }
 }

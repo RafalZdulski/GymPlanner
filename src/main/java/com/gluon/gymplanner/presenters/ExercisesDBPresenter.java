@@ -12,7 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
-public class ExercisesDBPresenter {
+public class ExercisesDBPresenter implements Presenter{
 
     @FXML
     private View secondary;

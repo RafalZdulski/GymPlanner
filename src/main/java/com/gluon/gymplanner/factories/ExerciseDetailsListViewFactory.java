@@ -44,6 +44,7 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
                     name.setFont(Font.font("System", FontWeight.BOLD,22));
                     name.setWrappingWidth(320);
 
+                    //TODO FIX: some images are not displayed at all
                     ImageView imageView = new ImageView();
                     imageView.setFitWidth(126);
                     imageView.setFitHeight(84);

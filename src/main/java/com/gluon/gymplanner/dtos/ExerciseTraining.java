@@ -31,37 +31,9 @@ public class ExerciseTraining {
         return series;
     }
 
-    public String getName() {
-        return exercise.getName();
+    public ExerciseDetails getExercise() {
+        return exercise;
     }
 
-    public String getPicture() {
-        return exercise.getPicture();
-    }
-
-    public String[] getBodyParts() {
-        return exercise.getBodyParts();
-    }
-
-    public String[] getTargetMuscles() {
-        return exercise.getTargetMuscles();
-    }
-
-    public String getMechanics() {
-        return exercise.getMechanics();
-    }
-
-    public String getForce() {
-        return exercise.getForce();
-    }
-
-    public String[] getExecution() {
-        return exercise.getExecution();
-    }
-
-    public String[] getTips() {
-        return exercise.getTips();
-    }
-
-
+    public String getName(){ return exercise.getName(); }
 }

@@ -53,7 +53,7 @@ public class QuickWorkoutPresenter implements Presenter{
         });
 
         exerciseListView.setItems(FXCollections.observableList(workout.getTrainingList()));
-        exerciseListView.setCellFactory(new ExerciseTrainingListViewFactory());
+        exerciseListView.setCellFactory(new ExerciseTrainingListViewFactory(workout));
     }
 
     public void addExercise(ExerciseTraining exercise){

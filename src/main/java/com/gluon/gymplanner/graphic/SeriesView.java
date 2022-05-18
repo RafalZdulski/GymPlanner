@@ -3,13 +3,10 @@ package com.gluon.gymplanner.graphic;
 import com.gluon.gymplanner.dtos.ExerciseSeries;
 import com.gluonhq.charm.glisten.control.TextField;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.LinkedList;
@@ -38,7 +35,18 @@ public class SeriesView extends GridPane {
         seriesCounter = 0;
         init();
         addHeader();
-        newSeriesRow();
+        newRow();
+    }
+
+    public SeriesView(List<ExerciseSeries> series){
+        seriesCounter = 0;
+        for (var s : series){
+            this.addRow(s);
+        }
+        this.series = series;
+        init();
+        addHeader();
+        newRow();
     }
 
     private void addHeader() {
@@ -57,7 +65,7 @@ public class SeriesView extends GridPane {
         setHgap(10);
     }
 
-    public void newSeriesRow(){
+    public void newRow(){
         add(new Text(String.valueOf(seriesCounter+1)),0,seriesCounter+1);
 
         lastWeightField = new TextField();
@@ -79,33 +87,62 @@ public class SeriesView extends GridPane {
             int repsDone = parseReps(lastRepsDoneField);
             series.add(new ExerciseSeries(weight,repsPlan,repsDone));
 
-            newSeriesRow();
+            newRow();
 
             button.setGraphic(MaterialDesignIcon.DELETE.graphic());
             button.setOnAction(del -> {
                 series.remove(Integer.parseInt(button.getId()));
-                seriesCounter--;
-                this.getChildren().removeIf(node -> GridPane.getRowIndex(node) == GridPane.getRowIndex(button));
-                this.getChildren().filtered(node -> GridPane.getRowIndex(node) > GridPane.getRowIndex(button))
-                        .forEach(node -> {
-                            if(GridPane.getColumnIndex(node) == 4) {
-                                //decrementation of all buttons id
-                                int id = Integer.parseInt(node.getId()) - 1;
-                                node.setId(String.valueOf(id));
-                            }else if(GridPane.getColumnIndex(node) == 0){
-                                //decrementation of rows id '#' below deleted row
-                                Text txt = (Text) node;
-                                int val = Integer.parseInt(txt.getText()) - 1;
-                                txt.setText(String.valueOf(val));
-                            }
-                            int rowIndex = GridPane.getRowIndex(node);
-                            GridPane.setRowIndex(node,rowIndex - 1);
-                        });
+                setDeleteBtnAction(button);
             });
         });
         add(button,4,seriesCounter+1);
 
         seriesCounter++;
+    }
+
+    public void addRow(ExerciseSeries series){
+        add(new Text(String.valueOf(seriesCounter+1)),0,seriesCounter+1);
+
+        lastWeightField = new TextField(String.valueOf(series.getWeight()));
+        add(lastWeightField,1, seriesCounter+1);
+
+        lastRepsPlanField = new TextField(String.valueOf(series.getRepsPlanned()));
+        add(lastRepsPlanField, 2, seriesCounter+1);
+
+        lastRepsDoneField = new TextField(String.valueOf(series.getRepsDone()));
+        add(lastRepsDoneField, 3, seriesCounter+1);
+
+        Button button = new Button();
+        button.setMaxWidth(30);
+        button.setId(String.valueOf(seriesCounter));
+        button.setGraphic(MaterialDesignIcon.DELETE.graphic());
+        button.setOnAction(del -> {
+            this.series.remove(Integer.parseInt(button.getId()));
+            setDeleteBtnAction(button);
+        });
+        add(button,4,seriesCounter+1);
+
+        seriesCounter++;
+    }
+
+    private void setDeleteBtnAction(Button button) {
+        seriesCounter--;
+        this.getChildren().removeIf(node -> GridPane.getRowIndex(node) == GridPane.getRowIndex(button));
+        this.getChildren().filtered(node -> GridPane.getRowIndex(node) > GridPane.getRowIndex(button))
+                .forEach(node -> {
+                    if(GridPane.getColumnIndex(node) == 4) {
+                        //decrementation of all buttons id
+                        int id = Integer.parseInt(node.getId()) - 1;
+                        node.setId(String.valueOf(id));
+                    }else if(GridPane.getColumnIndex(node) == 0){
+                        //decrementation of rows id '#' below deleted row
+                        Text txt = (Text) node;
+                        int val = Integer.parseInt(txt.getText()) - 1;
+                        txt.setText(String.valueOf(val));
+                    }
+                    int rowIndex = GridPane.getRowIndex(node);
+                    GridPane.setRowIndex(node,rowIndex - 1);
+                });
     }
 
     private int parseReps(TextField repsField) {

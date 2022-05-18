@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Workout {
-    List<ExerciseTraining> trainingList;
+
+    private String name;
+
+    private List<ExerciseTraining> trainingList;
 
     public Workout(){
         trainingList = new ArrayList<>();
@@ -16,5 +19,12 @@ public class Workout {
 
     public List<ExerciseTraining> getTrainingList() {
         return trainingList;
+    }
+
+    public void removeExercise(ExerciseTraining exercise) {
+        if (trainingList.remove(exercise))
+            System.out.println("exercise " + exercise.getName() + " removed from workout");
+        else
+            System.err.println("could not remove " + exercise.getName());
     }
 }

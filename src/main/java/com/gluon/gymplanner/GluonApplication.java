@@ -25,7 +25,7 @@ public class GluonApplication extends Application {
     public static final String YOUR_WORKOUTS_VIEW = "Your Workouts View";
     public static final String SUMMARY_VIEW = "Summary View";
     public static final String EXERCISES_DB_VIEW = "Exercise DB View";
-    public static final String EXERCISES_VIEW = "Exercise View";
+    public static final String SEARCH_VIEW = "Search View";
 
     private static final Map<String, ViewInt> viewMap = new HashMap<>();
 
@@ -41,7 +41,6 @@ public class GluonApplication extends Application {
         appManager.addViewFactory(YOUR_WORKOUTS_VIEW, () -> getView(YOUR_WORKOUTS_VIEW).getView());
         appManager.addViewFactory(SUMMARY_VIEW, () -> getView(SUMMARY_VIEW).getView());
         appManager.addViewFactory(EXERCISES_DB_VIEW, () -> getView(EXERCISES_DB_VIEW).getView());
-        //appManager.addViewFactory(EXERCISES_VIEW, () -> new ExerciseView().getView());
 
         DrawerManager.buildDrawer(appManager);
     }
@@ -54,6 +53,8 @@ public class GluonApplication extends Application {
         viewMap.put(YOUR_WORKOUTS_VIEW, new YourWorkoutsView());
         viewMap.put(SUMMARY_VIEW, new SummaryView());
         viewMap.put(EXERCISES_DB_VIEW, new ExerciseDBView());
+        viewMap.put(SEARCH_VIEW, new SearchView());
+        //TODO REFACTOR: move exercise view initialization from exercisesDBView to here
     }
 
     @Override

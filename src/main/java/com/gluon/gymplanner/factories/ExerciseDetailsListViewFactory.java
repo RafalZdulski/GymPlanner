@@ -3,7 +3,7 @@ package com.gluon.gymplanner.factories;
 import com.gluon.gymplanner.GluonApplication;
 import com.gluon.gymplanner.dtos.ExerciseDetails;
 import com.gluon.gymplanner.dtos.ExerciseTraining;
-import com.gluon.gymplanner.graphic.SeriesView;
+import com.gluon.gymplanner.graphic.exercise.SeriesView;
 import com.gluon.gymplanner.presenters.ExercisePresenter;
 import com.gluon.gymplanner.presenters.QuickWorkoutPresenter;
 import com.gluon.gymplanner.views.ExerciseView;
@@ -64,6 +64,7 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
             }
         };
 
+        cell.setMaxWidth(330);
 
         cell.addEventHandler(MouseEvent.MOUSE_RELEASED, e ->{
             if(!cell.isEmpty()) {

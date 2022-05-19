@@ -1,5 +1,6 @@
 package com.gluon.gymplanner.presenters;
 
+import com.gluon.gymplanner.dtos.Workout;
 import com.gluonhq.charm.glisten.animation.BounceInRightTransition;
 import com.gluonhq.charm.glisten.application.AppManager;
 import com.gluonhq.charm.glisten.control.AppBar;
@@ -7,6 +8,9 @@ import com.gluonhq.charm.glisten.control.FloatingActionButton;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import javafx.fxml.FXML;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class YourWorkoutsPresenter implements Presenter{
 
@@ -22,8 +26,9 @@ public class YourWorkoutsPresenter implements Presenter{
                 appBar.setNavIcon(MaterialDesignIcon.MENU.button(e -> 
                         AppManager.getInstance().getDrawer().open()));
                 appBar.setTitleText("your workouts");
-                appBar.getActionItems().add(MaterialDesignIcon.FAVORITE.button(e -> 
-                        System.out.println("Favorite")));
+                appBar.getActionItems().add(MaterialDesignIcon.PERSON.button(e ->
+                        //TODO ADD: add person panel
+                        System.out.println("go to user panel")));
             }
         });
     }

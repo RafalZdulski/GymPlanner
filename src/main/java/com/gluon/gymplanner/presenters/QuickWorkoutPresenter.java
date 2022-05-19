@@ -43,10 +43,13 @@ public class QuickWorkoutPresenter implements Presenter{
                 AppBar appBar = AppManager.getInstance().getAppBar();
                 appBar.setNavIcon(MaterialDesignIcon.MENU.button(e -> 
                         AppManager.getInstance().getDrawer().open()));
-
                 appBar.setTitleText("Quick Workout");
+                appBar.getActionItems().add(MaterialDesignIcon.PERSON.button(e ->
+                        //TODO ADD: add person panel
+                        System.out.println("go to user panel")));
 
                 //TODO ADD: saving quick workout to your workouts
+                //it should ask whether save it to favourite workouts or to calendar
                 appBar.getActionItems().add(MaterialDesignIcon.SAVE.button(e ->
                         System.out.println("to implement: save this workout in your workouts")));
             }

@@ -3,8 +3,13 @@ package com.gluon.gymplanner.jdbc;
 import com.gluon.gymplanner.dtos.ExerciseDetails;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
+
+//TODO IMPLEMENT: implement JDBC
 public class ExerciseJDBC {
 
     public List<ExerciseDetails> getAllExercises(){
@@ -40,5 +45,48 @@ public class ExerciseJDBC {
 //                new ExerciseDetails("", "",
 //                        new String[]{""}, new String[]{""}, "", "")
         );
+    }
+
+    public List<String> getAllBodyParts(){
+        return List.of(
+                "arms",
+                "shoulders",
+                "chest",
+                "core",
+                "back",
+                "legs and glutes"
+        );
+    }
+
+    public List<ExerciseDetails> getFiltered(String name, String force, String mechanics, List<String> bodyParts){
+        List<ExerciseDetails> allExercises = getAllExercises();
+        List<ExerciseDetails> ret = new ArrayList<>();
+
+        //TODO REFACTOR: filtering by name should work similar to regex
+        for (var exercise : allExercises){
+            if (!name.isEmpty() && !exercise.getName().toLowerCase().contains(name.toLowerCase()))
+                continue;
+            if (force != null)
+                if (!exercise.getForce().equals(force))
+                    continue;
+            if (mechanics != null)
+                if (!exercise.getMechanics().equals(mechanics))
+                    continue;
+            if (!bodyParts.isEmpty()){
+                //TODO QUESTION: should bodyParts filters work in OR or AND - now its OR
+                boolean match = false;
+                for (var bp : exercise.getBodyParts())
+                    if (bodyParts.contains(bp)) {
+                        match = true;
+                        break;
+                    }
+                if (!match){
+                    continue;
+                }
+            }
+            ret.add(exercise);
+        }
+
+        return ret;
     }
 }

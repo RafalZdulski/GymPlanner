@@ -22,8 +22,9 @@ public class CalendarPresenter implements Presenter{
                 appBar.setNavIcon(MaterialDesignIcon.MENU.button(e -> 
                         AppManager.getInstance().getDrawer().open()));
                 appBar.setTitleText("Calendar");
-                appBar.getActionItems().add(MaterialDesignIcon.FAVORITE.button(e -> 
-                        System.out.println("Favorite")));
+                appBar.getActionItems().add(MaterialDesignIcon.PERSON.button(e ->
+                        //TODO ADD: add person panel
+                        System.out.println("go to user panel")));
             }
         });
     }

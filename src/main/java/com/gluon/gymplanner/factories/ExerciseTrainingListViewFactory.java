@@ -3,7 +3,7 @@ package com.gluon.gymplanner.factories;
 import com.gluon.gymplanner.dtos.ExerciseDetails;
 import com.gluon.gymplanner.dtos.ExerciseTraining;
 import com.gluon.gymplanner.dtos.Workout;
-import com.gluon.gymplanner.graphic.SeriesView;
+import com.gluon.gymplanner.graphic.exercise.SeriesView;
 import com.gluon.gymplanner.presenters.ExercisePresenter;
 import com.gluon.gymplanner.views.ExerciseView;
 import com.gluonhq.charm.glisten.application.AppManager;

@@ -1,4 +1,4 @@
-package com.gluon.gymplanner.graphic;
+package com.gluon.gymplanner.graphic.exercise;
 
 import com.gluon.gymplanner.dtos.ExerciseSeries;
 import com.gluonhq.charm.glisten.control.TextField;

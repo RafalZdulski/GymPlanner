@@ -60,7 +60,8 @@ public class GluonApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         appManager.start(primaryStage);
-        primaryStage.setResizable(false);
+        primaryStage.setWidth(350);
+       //primaryStage.setResizable(false);
     }
 
     private void postInit(Scene scene) {

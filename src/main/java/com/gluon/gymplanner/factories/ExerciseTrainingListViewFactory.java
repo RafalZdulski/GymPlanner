@@ -46,7 +46,7 @@ public class ExerciseTrainingListViewFactory implements Callback<ListView<Exerci
                 if (!empty){
                     Text name = new Text(item.getName());
                     name.setFont(Font.font("System", FontWeight.BOLD,18));
-                    name.setWrappingWidth(270);
+                    name.setWrappingWidth(255);
 
                     HBox bodyPartsHBox = new HBox(Arrays.stream(item.getExercise().getBodyParts()).map(Text::new).toArray(Text[]::new));
                     bodyPartsHBox.setSpacing(5);
@@ -59,6 +59,7 @@ public class ExerciseTrainingListViewFactory implements Callback<ListView<Exerci
 
                     //Series dropdown view
                     Button showSeriesBtn = new Button("series");
+                    showSeriesBtn.setStyle("-fx-background-radius: 20");
                     showSeriesBtn.setPrefWidth(300);
                     showSeriesBtn.setMaxHeight(30);
 
@@ -71,11 +72,13 @@ public class ExerciseTrainingListViewFactory implements Callback<ListView<Exerci
 
 
                     Button delBtn = new Button();
+                    delBtn.setStyle("-fx-background-radius: 20");
                     delBtn.setGraphic(MaterialDesignIcon.DELETE.graphic());
                     delBtn.setOnAction(e -> {
                         workout.removeExercise(item);
                         //TODO FIX problem: without setting items again it still display removed exercises
                         exerciseTrainingListView.setItems(FXCollections.observableList(workout.getTrainingList()));
+                        exerciseTrainingListView.setCellFactory(new ExerciseTrainingListViewFactory(workout));
                     });
 
                     setGraphic(new VBox(new HBox(name, delBtn), description, seriesBox));
@@ -99,7 +102,7 @@ public class ExerciseTrainingListViewFactory implements Callback<ListView<Exerci
             }
         };
 
-        cell.setMaxWidth(AppManager.getInstance().getScreenWidth());
+        cell.setPadding(new Insets(10,5,10,5));
 
         cell.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
             if(!cell.isEmpty()) {

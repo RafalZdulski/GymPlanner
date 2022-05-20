@@ -7,6 +7,7 @@ import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.control.FloatingActionButton;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import java.util.ArrayList;
@@ -32,4 +33,5 @@ public class YourWorkoutsPresenter implements Presenter{
             }
         });
     }
+
 }

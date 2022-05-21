@@ -115,6 +115,7 @@ public class SeriesView extends GridPane {
 
         Button button = new Button();
         button.setMaxWidth(30);
+        button.setStyle("-fx-background-radius: 30");
         button.setId(String.valueOf(seriesCounter));
         button.setGraphic(MaterialDesignIcon.DELETE.graphic());
         button.setOnAction(del -> {

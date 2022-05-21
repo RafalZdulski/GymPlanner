@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.gluonhq.charm.glisten.application.AppManager.HOME_VIEW;
 import static com.gluonhq.charm.glisten.application.AppManager.getInstance;
@@ -26,6 +25,7 @@ public class GluonApplication extends Application {
     public static final String SUMMARY_VIEW = "Summary View";
     public static final String EXERCISES_DB_VIEW = "Exercise DB View";
     public static final String SEARCH_VIEW = "Search View";
+    public static final String EXERCISE_EXEC_VIEW = "Exercise Exec View";
 
     private static final Map<String, ViewInt> viewMap = new HashMap<>();
 
@@ -41,6 +41,8 @@ public class GluonApplication extends Application {
         appManager.addViewFactory(YOUR_WORKOUTS_VIEW, () -> getView(YOUR_WORKOUTS_VIEW).getView());
         appManager.addViewFactory(SUMMARY_VIEW, () -> getView(SUMMARY_VIEW).getView());
         appManager.addViewFactory(EXERCISES_DB_VIEW, () -> getView(EXERCISES_DB_VIEW).getView());
+        appManager.addViewFactory(EXERCISE_EXEC_VIEW, () -> getView(EXERCISE_EXEC_VIEW).getView());
+
 
         DrawerManager.buildDrawer(appManager);
     }
@@ -54,6 +56,7 @@ public class GluonApplication extends Application {
         viewMap.put(SUMMARY_VIEW, new SummaryView());
         viewMap.put(EXERCISES_DB_VIEW, new ExerciseDBView());
         viewMap.put(SEARCH_VIEW, new SearchView());
+        viewMap.put(EXERCISE_EXEC_VIEW, new ExerciseExecutionView());
         //TODO REFACTOR: move exercise view initialization from exercisesDBView to here
     }
 

@@ -80,6 +80,13 @@ public class QuickWorkoutPresenter implements Presenter{
 
     @FXML
     void startWorkout(ActionEvent event) {
+        if (workout.getTrainingList().size() < 1)
+            return;
 
+        ExerciseExecutionPresenter presenter = (ExerciseExecutionPresenter)
+                GluonApplication.getView(GluonApplication.EXERCISE_EXEC_VIEW).getPresenter();
+        presenter.setWorkout(workout);
+
+        GluonApplication.switchView(GluonApplication.EXERCISE_EXEC_VIEW);
     }
 }

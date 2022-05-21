@@ -15,38 +15,40 @@ import java.util.List;
 public class SeriesView extends GridPane {
 
     private int seriesCounter;
-    private List<ExerciseSeries> series;
+   // private List<ExerciseSeries> series = new LinkedList<>();
 
-    TextField lastWeightField;
-    TextField lastRepsPlanField;
-    TextField lastRepsDoneField;
+    List<TextField> weightFields = new LinkedList<>();
+    List<TextField> repsPlanFields = new LinkedList<>();
+    List<TextField> repsDoneFields = new LinkedList<>();
+
+    Button addButton = initAddButton();
 
     public List<ExerciseSeries> getSeries() {
-        double weight = parseWeight(lastWeightField);
-        int repsPlan = parseReps(lastRepsPlanField);
-        int repsDone = parseReps(lastRepsDoneField);
-        if (weight + repsDone + repsPlan > 0)
-            series.add(new ExerciseSeries(weight,repsPlan,repsDone));
+        List<ExerciseSeries> series = new LinkedList<>();
+        for (int i=0; i<seriesCounter; i++){
+            double weight = parseWeight(weightFields.get(i));
+            int repsPlanned = parseReps(repsPlanFields.get(i));
+            int repsDone = parseReps(repsDoneFields.get(i));
+            series.add(new ExerciseSeries(weight, repsPlanned, repsDone));
+        }
         return series;
     }
 
     public SeriesView(){
-        series = new LinkedList<>();
         seriesCounter = 0;
         init();
         addHeader();
-        newRow();
+        add(addButton,1,seriesCounter+1);
     }
 
     public SeriesView(List<ExerciseSeries> series){
         seriesCounter = 0;
         for (var s : series){
-            this.addRow(s);
+            this.newRow(s);
         }
-        this.series = series;
         init();
         addHeader();
-        newRow();
+        add(addButton,1,seriesCounter+1);
     }
 
     private void addHeader() {
@@ -57,8 +59,8 @@ public class SeriesView extends GridPane {
     }
 
     private void init(){
-        setMaxWidth(250);
-        setHeight(300);
+        setMaxWidth(225);
+        //setHeight(300);
         setPadding(new Insets(5));
         setAlignment(Pos.CENTER);
         setVgap(10);
@@ -68,70 +70,50 @@ public class SeriesView extends GridPane {
     public void newRow(){
         add(new Text(String.valueOf(seriesCounter+1)),0,seriesCounter+1);
 
-        lastWeightField = new TextField();
-        add(lastWeightField,1, seriesCounter+1);
+        TextField weightField = new TextField();
+        weightFields.add(weightField);
+        add(weightField,1, seriesCounter+1);
 
-        lastRepsPlanField = new TextField();
-        add(lastRepsPlanField, 2, seriesCounter+1);
+        TextField repsPlanField = new TextField();
+        repsPlanFields.add(repsPlanField);
+        add(repsPlanField, 2, seriesCounter+1);
 
-        lastRepsDoneField = new TextField();
-        add(lastRepsDoneField, 3, seriesCounter+1);
+        TextField repsDoneField = new TextField();
+        repsDoneFields.add(repsDoneField);
+        add(repsDoneField, 3, seriesCounter+1);
 
-        Button button = new Button();
-        button.setStyle("-fx-background-radius: 30");
-        button.setMaxWidth(30);
-        button.setId(String.valueOf(seriesCounter));
-        button.setGraphic(MaterialDesignIcon.ADD.graphic());
-        button.setOnAction(add -> {
-            double weight = parseWeight(lastWeightField);
-            int repsPlan = parseReps(lastRepsPlanField);
-            int repsDone = parseReps(lastRepsDoneField);
-            series.add(new ExerciseSeries(weight,repsPlan,repsDone));
+        add(initDeleteButton(),4,seriesCounter+1);
 
-            newRow();
-
-            button.setGraphic(MaterialDesignIcon.DELETE.graphic());
-            button.setOnAction(del -> {
-                series.remove(Integer.parseInt(button.getId()));
-                setDeleteBtnAction(button);
-            });
-        });
-        add(button,4,seriesCounter+1);
-
-        seriesCounter++;
+        GridPane.setRowIndex(addButton,++seriesCounter+1);
     }
 
-    public void addRow(ExerciseSeries series){
+    public void newRow(ExerciseSeries series){
         add(new Text(String.valueOf(seriesCounter+1)),0,seriesCounter+1);
 
-        lastWeightField = new TextField(String.valueOf(series.getWeight()));
-        add(lastWeightField,1, seriesCounter+1);
+        TextField weightField = new TextField(String.valueOf(series.getWeight()));
+        weightFields.add(weightField);
+        add(weightField,1, seriesCounter+1);
 
-        lastRepsPlanField = new TextField(String.valueOf(series.getRepsPlanned()));
-        add(lastRepsPlanField, 2, seriesCounter+1);
+        TextField repsPlanField = new TextField(String.valueOf(series.getRepsPlanned()));
+        repsPlanFields.add(repsPlanField);
+        add(repsPlanField, 2, seriesCounter+1);
 
-        lastRepsDoneField = new TextField(String.valueOf(series.getRepsDone()));
-        add(lastRepsDoneField, 3, seriesCounter+1);
+        TextField repsDoneField = new TextField(String.valueOf(series.getRepsDone()));
+        repsDoneFields.add(repsDoneField);
+        add(repsDoneField, 3, seriesCounter+1);
 
-        Button button = new Button();
-        button.setMaxWidth(30);
-        button.setStyle("-fx-background-radius: 30");
-        button.setId(String.valueOf(seriesCounter));
-        button.setGraphic(MaterialDesignIcon.DELETE.graphic());
-        button.setOnAction(del -> {
-            this.series.remove(Integer.parseInt(button.getId()));
-            setDeleteBtnAction(button);
-        });
-        add(button,4,seriesCounter+1);
+        add(initDeleteButton(),4,seriesCounter+1);
 
-        seriesCounter++;
+        GridPane.setRowIndex(addButton,++seriesCounter+1);
     }
 
     private void setDeleteBtnAction(Button button) {
         seriesCounter--;
         this.getChildren().removeIf(node -> GridPane.getRowIndex(node) == GridPane.getRowIndex(button));
-        this.getChildren().filtered(node -> GridPane.getRowIndex(node) > GridPane.getRowIndex(button))
-                .forEach(node -> {
+        this.getChildren().filtered(node -> (
+                GridPane.getRowIndex(node) > GridPane.getRowIndex(button) &&
+                        GridPane.getRowIndex(node) < GridPane.getRowIndex(addButton))
+                ).forEach(node -> {
                     if(GridPane.getColumnIndex(node) == 4) {
                         //decrementation of all buttons id
                         int id = Integer.parseInt(node.getId()) - 1;
@@ -167,5 +149,32 @@ public class SeriesView extends GridPane {
             //TODO ADD: make it illegal to insert non-number values
         }
         return .0;
+    }
+
+    private Button initAddButton(){
+        Button button = new Button();
+        button.setGraphic(MaterialDesignIcon.ADD.graphic());
+        button.setStyle("-fx-background-radius: 30");
+        button.setPrefWidth(100);
+        button.setOnAction(e -> newRow());
+        //TODO FIX: center add button
+        GridPane.setColumnSpan(button, 4);
+
+        return button;
+    }
+
+    private Button initDeleteButton(){
+        Button button = new Button();
+        button.setMaxWidth(30);
+        button.setStyle("-fx-background-radius: 30");
+        button.setId(String.valueOf(seriesCounter));
+        button.setGraphic(MaterialDesignIcon.DELETE.graphic());
+        button.setOnAction(del -> {
+            weightFields.remove(Integer.parseInt(button.getId()));
+            repsPlanFields.remove(Integer.parseInt(button.getId()));
+            repsDoneFields.remove(Integer.parseInt(button.getId()));
+            setDeleteBtnAction(button);
+        });
+        return button;
     }
 }

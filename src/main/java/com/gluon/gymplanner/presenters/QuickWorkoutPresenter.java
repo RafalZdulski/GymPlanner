@@ -26,11 +26,6 @@ public class QuickWorkoutPresenter implements Presenter{
 
     public void initialize() {
         secondary.setShowTransitionFactory(BounceInRightTransition::new);
-
-//        FloatingActionButton floatingAddBtn = new FloatingActionButton(MaterialDesignIcon.ADD.text, e -> {
-//            GluonApplication.switchView(GluonApplication.EXERCISES_DB_VIEW);
-//        });
-//        floatingAddBtn.showOn(secondary);
         
         secondary.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
@@ -82,6 +77,8 @@ public class QuickWorkoutPresenter implements Presenter{
     void startWorkout(ActionEvent event) {
         if (workout.getTrainingList().size() < 1)
             return;
+
+
 
         ExerciseExecutionPresenter presenter = (ExerciseExecutionPresenter)
                 GluonApplication.getView(GluonApplication.EXERCISE_EXEC_VIEW).getPresenter();

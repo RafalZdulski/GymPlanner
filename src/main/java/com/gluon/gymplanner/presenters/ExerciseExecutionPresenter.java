@@ -114,6 +114,7 @@ public class ExerciseExecutionPresenter implements Presenter{
         }else {
             nextExerciseBtn.setText("Finish Workout");
             nextExerciseBtn.setOnAction(e -> {
+                currentExercise.setSeries(currentSeriesView.getSeries());
                 showWorkoutEndScreen();
             });
         }
@@ -185,11 +186,12 @@ public class ExerciseExecutionPresenter implements Presenter{
         int repsDone = 0;
 
         for (var exercise : workout.getTrainingList()){
+            System.out.println(exercise.getName());
             for (var series : exercise.getSeriesList()){
                 repsPlanned += series.getRepsPlanned();
                 repsDone += series.getRepsDone();
             }
         }
-        return repsDone / (double) repsPlanned;
+        return repsDone / (double) repsPlanned * 100.;
     }
 }

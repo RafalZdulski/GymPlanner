@@ -11,6 +11,7 @@ import com.gluonhq.charm.glisten.control.NavigationDrawer.Item;
 import com.gluonhq.charm.glisten.control.NavigationDrawer.ViewItem;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import javafx.scene.image.Image;
+import javafx.scene.text.Text;
 
 import static com.gluon.gymplanner.GluonApplication.*;
 
@@ -51,6 +52,8 @@ public class DrawerManager {
                 trainingPlansItem, workoutsItem, summaryItem,
                 exercisesDBItem
         );
+
+        drawer.setFooter(new Text("PWSI group II"));
         
         if (Platform.isDesktop()) {
             final Item quitItem = new Item("Quit", MaterialDesignIcon.EXIT_TO_APP.graphic());
@@ -62,4 +65,6 @@ public class DrawerManager {
             drawer.getItems().add(quitItem);
         }
     }
+
+
 }

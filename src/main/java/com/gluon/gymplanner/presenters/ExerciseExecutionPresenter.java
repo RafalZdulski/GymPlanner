@@ -1,7 +1,6 @@
 package com.gluon.gymplanner.presenters;
 
 import com.gluon.gymplanner.GluonApplication;
-import com.gluon.gymplanner.dtos.ExerciseSeries;
 import com.gluon.gymplanner.dtos.ExerciseTraining;
 import com.gluon.gymplanner.dtos.Workout;
 import com.gluon.gymplanner.graphic.exercise.SeriesView;
@@ -17,12 +16,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-import java.util.List;
 
 public class ExerciseExecutionPresenter implements Presenter{
 
@@ -59,7 +55,7 @@ public class ExerciseExecutionPresenter implements Presenter{
             currentExercise = workout.getTrainingList().get(i+1);
             currentSeriesView = new SeriesView(currentExercise.getSeriesList());
         }
-        update();
+        onSwitching();
     }
 
     @FXML
@@ -70,14 +66,14 @@ public class ExerciseExecutionPresenter implements Presenter{
             currentExercise = workout.getTrainingList().get(i-1);
             currentSeriesView = new SeriesView(currentExercise.getSeriesList());
         }
-        update();
+        onSwitching();
     }
 
     public void setWorkout(Workout workout){
         this.workout = workout;
         currentExercise = workout.getTrainingList().get(0);
         currentSeriesView = new SeriesView(currentExercise.getSeriesList());
-        update();
+        onSwitching();
     }
 
 
@@ -97,7 +93,7 @@ public class ExerciseExecutionPresenter implements Presenter{
         });
     }
 
-    private void update(){
+    private void onSwitching(){
         nameText.setText(currentExercise.getName());
         int i = workout.getTrainingList().indexOf(currentExercise);
         counterText.setText(i+1 + " / " + workout.getTrainingList().size());

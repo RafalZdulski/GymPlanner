@@ -27,4 +27,8 @@ public class Workout {
         else
             System.err.println("could not remove " + exercise.getName());
     }
+
+    public void setTrainingList(List<ExerciseTraining> trainingList) {
+        this.trainingList = trainingList;
+    }
 }

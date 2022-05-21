@@ -80,6 +80,7 @@ public class GluonApplication extends Application {
 
 
     public static void switchView(String viewName){
+        getView(viewName).getPresenter().update();
         getInstance().switchView(viewName);
     }
 

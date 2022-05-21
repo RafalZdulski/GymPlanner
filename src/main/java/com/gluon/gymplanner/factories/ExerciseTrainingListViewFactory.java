@@ -1,6 +1,7 @@
 package com.gluon.gymplanner.factories;
 
 import com.gluon.gymplanner.dtos.ExerciseDetails;
+import com.gluon.gymplanner.dtos.ExerciseSeries;
 import com.gluon.gymplanner.dtos.ExerciseTraining;
 import com.gluon.gymplanner.dtos.Workout;
 import com.gluon.gymplanner.graphic.exercise.SeriesView;
@@ -12,6 +13,11 @@ import com.gluonhq.charm.glisten.control.BottomNavigationButton;
 import com.gluonhq.charm.glisten.layout.layer.SidePopupView;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
+import com.sun.javafx.binding.SelectBinding;
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -27,14 +33,22 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 //TODO ADD: ability to change order of exercise by grabbing and moving list element
 public class ExerciseTrainingListViewFactory implements Callback<ListView<ExerciseTraining>, ListCell<ExerciseTraining>> {
 
     private Workout workout;
 
+    private HashMap<ExerciseTraining, SeriesView> seriesMap = new HashMap<>();
+
     public ExerciseTrainingListViewFactory(Workout workout){
         this.workout = workout;
+    }
+
+    public HashMap<ExerciseTraining, SeriesView> getSeriesMap() {
+        return seriesMap;
     }
 
     @Override
@@ -66,10 +80,8 @@ public class ExerciseTrainingListViewFactory implements Callback<ListView<Exerci
                     VBox seriesBox = new VBox(showSeriesBtn);
                     seriesBox.setAlignment(Pos.TOP_CENTER);
                     SeriesView seriesView = new SeriesView(item.getSeriesList());
+                    seriesMap.put(item, seriesView);
                     showSeriesBtnFunc(showSeriesBtn, seriesBox, seriesView);
-
-
-
 
                     Button delBtn = new Button();
                     delBtn.setStyle("-fx-background-radius: 20");
@@ -138,6 +150,4 @@ public class ExerciseTrainingListViewFactory implements Callback<ListView<Exerci
         bottomNavigation.getActionItems().addAll(retBtn, favBtn);
         return bottomNavigation;
     }
-
-
 }

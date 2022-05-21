@@ -15,7 +15,6 @@ import java.util.List;
 public class SeriesView extends GridPane {
 
     private int seriesCounter;
-   // private List<ExerciseSeries> series = new LinkedList<>();
 
     List<TextField> weightFields = new LinkedList<>();
     List<TextField> repsPlanFields = new LinkedList<>();

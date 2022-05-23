@@ -48,7 +48,11 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
                     ImageView imageView = new ImageView();
                     imageView.setFitWidth(126);
                     imageView.setFitHeight(84);
-                    imageView.setImage((new Image(item.getPicture(),126,84,true,true,true)));
+                    try {
+                        imageView.setImage((new Image(item.getPicture(),126,84,true,true,true)));
+                    } catch (IllegalArgumentException e){
+                        System.err.println(item.getPicture());
+                    }
 
                     HBox bodyPartsHBox = new HBox(Arrays.stream(item.getBodyParts()).map(Text::new).toArray(Text[]::new));
                     bodyPartsHBox.setSpacing(5);

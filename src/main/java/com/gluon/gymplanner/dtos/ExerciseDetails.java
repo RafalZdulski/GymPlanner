@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
  * https://exrx.net
  */
 public class ExerciseDetails {
+    private String id;
     private String name;
     private String picture;
     private String[] bodyParts;
@@ -18,9 +19,10 @@ public class ExerciseDetails {
     private String[] execution;
     private String[] tips;
 
-    public ExerciseDetails(String name, String picture, String[] bodyParts,
+    public ExerciseDetails(String id, String name, String picture, String[] bodyParts,
                            String[] targetMuscles, String mechanics, String force,
                            String[] execution, String[] tips) {
+        this.id = id;
         this.name = name;
         this.picture = picture;
         this.bodyParts = bodyParts;
@@ -31,9 +33,18 @@ public class ExerciseDetails {
         this.tips = tips;
     }
 
-    /**
-     * @deprecated only for develop and testing purpose
-     */
+    public ExerciseDetails(String id, String name, String picture, String[] bodyParts,
+                           String[] targetMuscles, String mechanics, String force) {
+        this.id = id;
+        this.name = name;
+        this.picture = picture;
+        this.bodyParts = bodyParts;
+        this.targetMuscles = targetMuscles;
+        this.mechanics = mechanics;
+        this.force = force;
+    }
+
+    /** @deprecated only for testing*/
     public ExerciseDetails(String name, String picture, String[] bodyParts,
                            String[] targetMuscles, String mechanics, String force) {
         this.name = name;
@@ -50,9 +61,9 @@ public class ExerciseDetails {
                 .append("name: ").append(name).append("\n")
                 .append("pic: ").append(picture).append("\n")
                 .append("body parts: ").append(Arrays.stream(bodyParts).map(s -> ", "+s )
-                        .collect(Collectors.joining()).substring(2)).append("\n")
+                        .collect(Collectors.joining()).substring(Math.min(2, bodyParts.length))).append("\n")
                 .append("target muscle: ").append(Arrays.stream(targetMuscles).map(s -> ", "+s)
-                        .collect(Collectors.joining()).substring(2)).append("\n")
+                        .collect(Collectors.joining()).substring(Math.min(2, targetMuscles.length))).append("\n")
                 .append("mechanics: ").append(mechanics).append("\n")
                 .append("force: ").append(force).append("\n");
 //                .append("execution: ").append(execution).append("\n")

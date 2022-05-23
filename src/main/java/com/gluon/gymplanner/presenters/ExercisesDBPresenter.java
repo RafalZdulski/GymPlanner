@@ -4,6 +4,7 @@ import com.gluon.gymplanner.GluonApplication;
 import com.gluon.gymplanner.dtos.ExerciseDetails;
 import com.gluon.gymplanner.factories.ExerciseDetailsListViewFactory;
 import com.gluon.gymplanner.jdbc.ExerciseJDBC;
+import com.gluon.gymplanner.jdbc.h2JDBC;
 import com.gluon.gymplanner.views.SearchView;
 import com.gluonhq.charm.glisten.animation.BounceInRightTransition;
 import com.gluonhq.charm.glisten.application.AppManager;
@@ -57,7 +58,7 @@ public class ExercisesDBPresenter implements Presenter{
         });
 
         exerciseListView.setCellFactory(new ExerciseDetailsListViewFactory());
-        exerciseListView.setItems(FXCollections.observableList(new ExerciseJDBC().getAllExercises()));
+        exerciseListView.setItems(FXCollections.observableList(new h2JDBC().getAll()));
 
     }
 

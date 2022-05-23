@@ -5,18 +5,17 @@ import com.gluon.gymplanner.dtos.ExerciseDetails;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 
-//TODO IMPLEMENT: implement JDBC
+/** @Deprecated to delete*/
+//TODO remove this class
 public class ExerciseJDBC {
 
     public List<ExerciseDetails> getAllExercises(){
         return List.of(
                 new ExerciseDetails("Close-grip push-up", "https://cdn-0.weighttraining.guide/wp-content/uploads/2016/11/close-grip-push-up-resized-768x512.png",
                     new String[]{"arms","chest"}, new String[]{"Triceps Brachii"}, "compound", "push"),
-                new ExerciseDetails("Incline dumbbell curl", "https://cdn-0.weighttraining.guide/wp-content/uploads/2017/01/Incline-Dumbbell-Curl-resized-768x512.png",
+                new ExerciseDetails("Incline dumbbell curl", "com/gluon/gymplanner/exercises/images/Incline-Dumbbell-Curl.webp",
                         new String[]{"arms"}, new String[]{" Biceps Brachii"}, "Isolation", "pull"),
                 new ExerciseDetails("Seated dumbbell overhead triceps extension", "https://cdn-0.weighttraining.guide/wp-content/uploads/2017/08/seated-dumbbell-overhead-triceps-extension-resized.png",
                         new String[]{"arms"}, new String[]{"Triceps Brachii"}, "isolation", "push"),

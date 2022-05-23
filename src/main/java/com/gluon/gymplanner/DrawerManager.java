@@ -53,8 +53,6 @@ public class DrawerManager {
                 exercisesDBItem
         );
 
-        drawer.setFooter(new Text("PWSI group II"));
-        
         if (Platform.isDesktop()) {
             final Item quitItem = new Item("Quit", MaterialDesignIcon.EXIT_TO_APP.graphic());
             quitItem.selectedProperty().addListener((obs, ov, nv) -> {

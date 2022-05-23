@@ -59,6 +59,21 @@
             <artifactId>util</artifactId>
             <version>${attach.version}</version>
         </dependency>
+
+        <!--H2 DATABASE-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.212</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.212</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <repositories>

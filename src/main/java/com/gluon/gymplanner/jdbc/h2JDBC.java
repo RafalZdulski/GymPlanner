@@ -23,7 +23,6 @@ public class h2JDBC implements ExerciseDB{
     //only for testing
     public static void main(String[] a) {
         //new h2JDBC().getFiltered("a","isolation","pull",new String[]{"back"}).forEach(System.out::println);
-        Arrays.stream(new h2JDBC().getExerciseTips("barbell-sumo-romanian-deadlift")).forEach(System.out::println);
     }
 
     @Override
@@ -124,7 +123,7 @@ public class h2JDBC implements ExerciseDB{
     }
 
     @Override
-    public String[] getExerciseExecution(String exercise_id) {
+    public List<String> getExerciseExecution(String exercise_id) {
         List<String> retList = new ArrayList<>();
         Connection conn = null;
         Statement stmt = null;
@@ -147,12 +146,12 @@ public class h2JDBC implements ExerciseDB{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }finally {
-            return retList.toArray(String[]::new);
+            return retList;
         }
     }
 
     @Override
-    public String[] getExerciseTips(String exercise_id) {
+    public List<String> getExerciseTips(String exercise_id) {
         List<String> retList = new ArrayList<>();
         Connection conn = null;
         Statement stmt = null;
@@ -175,7 +174,7 @@ public class h2JDBC implements ExerciseDB{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }finally {
-            return retList.toArray(String[]::new);
+            return retList;
         }
     }
 

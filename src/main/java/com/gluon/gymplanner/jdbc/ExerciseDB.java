@@ -9,9 +9,9 @@ public interface ExerciseDB {
 
     List<String> getAllBodyParts();
 
-    String[] getExerciseExecution(String exercise_id);
+    List<String> getExerciseExecution(String exercise_id);
 
-    String[] getExerciseTips(String exercise_id);
+    List<String> getExerciseTips(String exercise_id);
 
     List<ExerciseDetails> getFiltered(String name, String mechanic, String force, String[] bodyParts);
 }

@@ -3,7 +3,6 @@ package com.gluon.gymplanner.presenters;
 import com.gluon.gymplanner.GluonApplication;
 import com.gluon.gymplanner.dtos.ExerciseDetails;
 import com.gluon.gymplanner.factories.ExerciseDetailsListViewFactory;
-import com.gluon.gymplanner.jdbc.ExerciseJDBC;
 import com.gluon.gymplanner.jdbc.h2JDBC;
 import com.gluon.gymplanner.views.SearchView;
 import com.gluonhq.charm.glisten.animation.BounceInRightTransition;

@@ -28,4 +28,9 @@ public class TrainingPlansPresenter implements Presenter{
             }
         });
     }
+
+    @FXML
+    public void addNewPlan(){
+        
+    }
 }

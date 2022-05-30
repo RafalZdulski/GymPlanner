@@ -1,11 +1,14 @@
 package com.gluon.gymplanner.dtos;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Workout {
 
     private String name;
+
+    private Date date;
 
     private List<ExerciseTraining> trainingList;
 

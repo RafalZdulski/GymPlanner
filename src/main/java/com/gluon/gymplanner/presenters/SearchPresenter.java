@@ -4,20 +4,14 @@ import com.gluon.gymplanner.GluonApplication;
 import com.gluon.gymplanner.graphic.search.filters.FilterPillsDisplay;
 import com.gluon.gymplanner.graphic.search.filters.FilterWindow;
 import com.gluon.gymplanner.graphic.search.filters.FilterWrap;
-import com.gluon.gymplanner.jdbc.ExerciseJDBC;
-import com.gluonhq.charm.glisten.animation.BounceInRightTransition;
-import com.gluonhq.charm.glisten.application.AppManager;
-import com.gluonhq.charm.glisten.control.AppBar;
+import com.gluon.gymplanner.jdbc.h2JDBC;
 import com.gluonhq.charm.glisten.control.TextField;
 import com.gluonhq.charm.glisten.control.ToggleButtonGroup;
 import com.gluonhq.charm.glisten.layout.Layer;
 import com.gluonhq.charm.glisten.layout.layer.PopupView;
-import com.gluonhq.charm.glisten.layout.layer.SidePopupView;
 import com.gluonhq.charm.glisten.mvc.View;
-import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Side;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 
@@ -81,17 +75,23 @@ public class SearchPresenter implements Presenter{
         ExercisesDBPresenter exercisesDBPresenter = (ExercisesDBPresenter)
                 GluonApplication.getView(GluonApplication.EXERCISES_DB_VIEW).getPresenter();
 
-        exercisesDBPresenter.setExerciseList(new ExerciseJDBC().getFiltered(
+//        System.out.println("search query:");
+//        System.out.println("\tname: " + nameField.getText());
+//        System.out.println("\tmecha: " + mechToggleBtns.getToggles().filtered(ToggleButton::isSelected).get(0).getId());
+//        System.out.println("\tforce: " + forceToggleBtns.getToggles().filtered(ToggleButton::isSelected).get(0).getId());
+//        System.out.println("\tparts: " + bodyParts.stream().filter(FilterWrap::getCheckValue).map(FilterWrap::getItem).collect(Collectors.joining(", ")));
+
+        exercisesDBPresenter.setExerciseList(new h2JDBC().getFiltered(
                 nameField.getText(),
-                forceToggleBtns.getToggles().filtered(ToggleButton::isSelected).get(0).getId(),
                 mechToggleBtns.getToggles().filtered(ToggleButton::isSelected).get(0).getId(),
-                bodyParts.stream().filter(FilterWrap::getCheckValue).map(FilterWrap::getItem).collect(Collectors.toList())
+                forceToggleBtns.getToggles().filtered(ToggleButton::isSelected).get(0).getId(),
+                bodyParts.stream().filter(FilterWrap::getCheckValue).map(FilterWrap::getItem).toArray(String[]::new)
         ));
     }
 
     public void initialize() {
 //        secondary.setShowTransitionFactory(BounceInRightTransition::new);
-        bodyParts = new ExerciseJDBC().getAllBodyParts().stream().map(FilterWrap::new).collect(Collectors.toList());
+        bodyParts = new h2JDBC().getAllBodyParts().stream().map(FilterWrap::new).collect(Collectors.toList());
         FilterPillsDisplay bodyPartsPills = new FilterPillsDisplay(bodyParts);
         GridPane.setColumnSpan(bodyPartsPills,3);
         gridPane.add(bodyPartsPills, 0, 4);

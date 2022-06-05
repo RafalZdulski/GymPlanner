@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.gluonhq.charm.glisten.control.BottomNavigation?>
+<?import com.gluonhq.charm.glisten.control.BottomNavigationButton?>
+<?import com.gluonhq.charm.glisten.control.Icon?>
+<?import com.gluonhq.charm.glisten.mvc.View?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<View fx:id="secondary" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="325.0" stylesheets="@../css/secondary.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gluon.gymplanner.presenters.WorkoutPresenter">
+   <center>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
+         <content>
+            <ListView fx:id="exerciseListView" prefHeight="473.0" prefWidth="348.0" />
+         </content>
+      </ScrollPane>
+   </center>
+   <bottom>
+      <BottomNavigation prefHeight="65.0" prefWidth="350.0" BorderPane.alignment="CENTER">
+          <actionItems>
+              <BottomNavigationButton onAction="#clearWorkout" selected="true" text="Clear">
+                  <graphic>
+                      <Icon content="CLEAR" />
+                  </graphic>
+              </BottomNavigationButton>
+              <BottomNavigationButton onAction="#startWorkout" text="Start">
+                  <graphic>
+                      <Icon content="PLAY_ARROW" />
+                  </graphic>
+              </BottomNavigationButton>
+              <BottomNavigationButton onAction="#addExercise" text="Add">
+                  <graphic>
+                      <Icon content="ADD" />
+                  </graphic>
+              </BottomNavigationButton>
+          </actionItems>
+      </BottomNavigation>
+   </bottom>
+</View>

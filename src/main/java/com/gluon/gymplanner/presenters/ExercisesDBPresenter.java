@@ -21,8 +21,6 @@ import java.util.List;
 
 public class ExercisesDBPresenter implements Presenter{
 
-
-
     @FXML
     private View secondary;
 
@@ -65,6 +63,4 @@ public class ExercisesDBPresenter implements Presenter{
         exerciseListView.setItems(FXCollections.observableList(exerciseDetailsList));
         exerciseListView.setCellFactory(new ExerciseDetailsListViewFactory());
     }
-
-
 }

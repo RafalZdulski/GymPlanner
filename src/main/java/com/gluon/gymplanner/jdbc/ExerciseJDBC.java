@@ -4,7 +4,7 @@ import com.gluon.gymplanner.dtos.ExerciseDetails;
 
 import java.util.List;
 
-public interface ExerciseDB {
+public interface ExerciseJDBC {
     List<ExerciseDetails> getAll();
 
     List<String> getAllBodyParts();

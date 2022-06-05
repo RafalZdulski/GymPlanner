@@ -149,6 +149,7 @@ public class ExerciseExecutionPresenter implements Presenter{
         resumeBtn.setGraphic(MaterialDesignIcon.FITNESS_CENTER.graphic());
         resumeBtn.setOnAction( e -> {
             popupView.hide();
+            workout.setDone(true);
             //TODO ADD: adding finished workout to calendar
             GluonApplication.switchView(GluonApplication.CALENDAR_VIEW);
         });

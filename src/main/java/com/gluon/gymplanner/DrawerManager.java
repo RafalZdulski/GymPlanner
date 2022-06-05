@@ -11,7 +11,8 @@ import com.gluonhq.charm.glisten.control.NavigationDrawer.Item;
 import com.gluonhq.charm.glisten.control.NavigationDrawer.ViewItem;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import javafx.scene.image.Image;
-import javafx.scene.text.Text;
+
+import java.util.Objects;
 
 import static com.gluon.gymplanner.GluonApplication.*;
 
@@ -22,10 +23,10 @@ public class DrawerManager {
         
         NavigationDrawer.Header header = new NavigationDrawer.Header("Gym Planner",
                 "Plan Your Silhouette",
-                new Avatar(30, new Image(DrawerManager.class.getResourceAsStream("/com/gluon/gymplanner/icons/dumbbell-logo.png"))));
+                new Avatar(30, new Image(Objects.requireNonNull(DrawerManager.class.getResourceAsStream("/com/gluon/gymplanner/icons/dumbbell-logo.png")))));
         drawer.setHeader(header);
 
-        final Item dashboardItem = new ViewItem("dashboard",
+        final Item dashboardItem = new ViewItem("Dashboard",
                 MaterialDesignIcon.DASHBOARD.graphic(), DASHBOARD_VIEW, ViewStackPolicy.SKIP);
 
         final Item quickWorkoutItem = new ViewItem("Quick Workout",
@@ -35,10 +36,10 @@ public class DrawerManager {
                 MaterialDesignIcon.DATE_RANGE.graphic(), CALENDAR_VIEW);
 
         final Item trainingPlansItem = new ViewItem("Training Plans",
-                MaterialDesignIcon.APPS.graphic(), TRAINING_PLANS_VIEW);
+                MaterialDesignIcon.APPS.graphic(), PLANS_VIEW);
 
-        final Item workoutsItem = new ViewItem("Your Workouts",
-                MaterialDesignIcon.STYLE.graphic(), YOUR_WORKOUTS_VIEW);
+        final Item workoutsItem = new ViewItem("Your Favourites",
+                MaterialDesignIcon.FAVORITE.graphic(), PLAN_VIEW);
 
         final Item summaryItem = new ViewItem("Summary",
                 MaterialDesignIcon.ADD_BOX.graphic(), SUMMARY_VIEW);

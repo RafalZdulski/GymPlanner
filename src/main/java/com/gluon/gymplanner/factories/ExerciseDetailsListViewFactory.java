@@ -6,8 +6,10 @@ import com.gluon.gymplanner.dtos.ExerciseTraining;
 import com.gluon.gymplanner.graphic.exercise.SeriesView;
 import com.gluon.gymplanner.presenters.ExercisePresenter;
 import com.gluon.gymplanner.presenters.QuickWorkoutPresenter;
+import com.gluon.gymplanner.presenters.WorkoutPresenter;
 import com.gluon.gymplanner.views.ExerciseView;
 import com.gluon.gymplanner.views.QuickWorkoutView;
+import com.gluon.gymplanner.views.WorkoutView;
 import com.gluonhq.charm.glisten.control.BottomNavigation;
 import com.gluonhq.charm.glisten.control.BottomNavigationButton;
 import com.gluonhq.charm.glisten.layout.layer.PopupView;
@@ -15,6 +17,7 @@ import com.gluonhq.charm.glisten.layout.layer.SidePopupView;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -44,7 +47,6 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
                     name.setFont(Font.font("System", FontWeight.BOLD,22));
                     name.setWrappingWidth(320);
 
-                    //TODO FIX: some images are not displayed at all
                     ImageView imageView = new ImageView();
                     imageView.setFitWidth(126);
                     imageView.setFitHeight(84);
@@ -103,14 +105,14 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
 
         BottomNavigationButton addBtn = new BottomNavigationButton();
         addBtn.setGraphic(MaterialDesignIcon.ADD.graphic());
-        addBtn.setOnAction(e -> showPopupAddToQuickWorkout(sidePopupView, exercise));
+        addBtn.setOnAction(e -> showPopupAddToWorkout(sidePopupView, exercise));
 
         bottomNavigation.getActionItems().addAll(retBtn, favBtn, addBtn);
         return bottomNavigation;
     }
 
 
-    private void showPopupAddToQuickWorkout(SidePopupView sidePopupView, ExerciseDetails exerciseDetails) {
+    private void showPopupAddToWorkout(SidePopupView sidePopupView, ExerciseDetails exerciseDetails) {
         PopupView popupView = new PopupView(sidePopupView);
         popupView.setLayoutY(150);
         popupView.setLayoutX(50);
@@ -129,8 +131,8 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
         addBtn.setOnAction(e -> {
             ExerciseTraining exerciseTraining = new ExerciseTraining(exerciseDetails);
             exerciseTraining.setSeries(seriesView.getSeries());
-            addToQuickWorkout(exerciseTraining);
-            popupView.hide();
+            addToWorkout(popupView, exerciseTraining);
+            //popupView.hide();
         });
 
         BottomNavigationButton retBtn = new BottomNavigationButton();
@@ -147,10 +149,55 @@ public class ExerciseDetailsListViewFactory implements Callback<ListView<Exercis
         popupView.show();
     }
 
-    private void addToQuickWorkout(ExerciseTraining exercise) {
-        QuickWorkoutView view = (QuickWorkoutView) GluonApplication.getView(GluonApplication.QUICK_WORKOUT_VIEW);
-        QuickWorkoutPresenter presenter = (QuickWorkoutPresenter) view.getPresenter();
-        presenter.addExercise(exercise);
+    private void addToWorkout(PopupView popupViewParent, ExerciseTraining exercise) {
+        PopupView popupView = new PopupView(popupViewParent);
+        popupView.setLayoutY(20);
+        popupView.setLayoutX(20);
+
+        //popup content
+        View content = new View();
+
+        BottomNavigationButton quickWorkoutBtn = new BottomNavigationButton("Quick Workout");
+        quickWorkoutBtn.setPrefSize(150, 75);
+        quickWorkoutBtn.setOnAction(e -> {
+            QuickWorkoutView view = (QuickWorkoutView) GluonApplication.getView(GluonApplication.QUICK_WORKOUT_VIEW);
+            QuickWorkoutPresenter presenter = (QuickWorkoutPresenter) view.getPresenter();
+            presenter.addExercise(exercise);
+            popupView.hide();
+            popupViewParent.hide();
+        });
+
+        BottomNavigationButton lastWorkoutBtn = new BottomNavigationButton();
+        lastWorkoutBtn.setPrefSize(150, 75);
+        WorkoutView workoutView = (WorkoutView) GluonApplication.getView(GluonApplication.WORKOUT_VIEW);
+        WorkoutPresenter workoutPresenter = (WorkoutPresenter) workoutView.getPresenter();
+        if(workoutPresenter.getWorkout() != null){
+            lastWorkoutBtn.setText(workoutPresenter.getWorkout().getName());
+            lastWorkoutBtn.setOnAction(e -> {
+                    workoutPresenter.addExercise(exercise);
+                    popupView.hide();
+                    popupViewParent.hide();
+            });
+        }else {
+            lastWorkoutBtn.setText("last workout");
+            lastWorkoutBtn.setDisable(true);
+        }
+
+        BottomNavigationButton returnBtn = new BottomNavigationButton();
+        returnBtn.setGraphic(MaterialDesignIcon.ARROW_BACK.graphic());
+        returnBtn.setPrefSize(175,50);
+        returnBtn.setOnAction(e -> popupView.hide());
+
+        Text text = new Text("Add to..");
+        text.setFont(Font.font("system", FontWeight.BOLD, 24));
+
+        VBox vBox = new VBox(text, quickWorkoutBtn, lastWorkoutBtn, returnBtn);
+        vBox.setSpacing(8);
+        vBox.setAlignment(Pos.CENTER);
+
+        content.setCenter(vBox);
+        popupView.setContent(content);
+        popupView.show();
         //TODO ADD: popup message confirming exercise was added to quick workout
     }
 }

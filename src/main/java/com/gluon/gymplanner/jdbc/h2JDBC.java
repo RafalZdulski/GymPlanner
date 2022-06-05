@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class h2JDBC implements ExerciseDB{
+public class h2JDBC implements ExerciseJDBC {
     //TODO move it to configuration file
     final String IMAGES_DIRECTORY = "/com/gluon/gymplanner/database/exercises/images/";
     final String JDBC_DRIVER = "org.h2.Driver";

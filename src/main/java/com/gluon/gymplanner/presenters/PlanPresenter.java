@@ -3,6 +3,7 @@ package com.gluon.gymplanner.presenters;
 import com.gluon.gymplanner.GluonApplication;
 import com.gluon.gymplanner.dtos.Plan;
 import com.gluon.gymplanner.dtos.Workout;
+import com.gluon.gymplanner.jdbc.JDBCProxy;
 import com.gluonhq.charm.glisten.animation.BounceInRightTransition;
 import com.gluonhq.charm.glisten.application.AppManager;
 import com.gluonhq.charm.glisten.control.*;
@@ -62,9 +63,14 @@ public class PlanPresenter implements Presenter{
                         AppManager.getInstance().getDrawer().open()));
 //                appBar.setTitleText("your workouts");
 //                appBar.setTitle(new BottomNavigationButton("edit"));
+                appBar.getActionItems().add(MaterialDesignIcon.SAVE.button(e -> {
+                    JDBCProxy.getInstance().getUserJDBC().update("default", plan);
+                    System.out.println("plan: " + plan.getName() + " updated into db");
+                }));
                 appBar.getActionItems().add(MaterialDesignIcon.PERSON.button(e ->
                         //TODO ADD: add person panel
-                        System.out.println("go to user panel")));
+                        System.out.println("go to user panel")
+                ));
             }
         });
     }
@@ -163,12 +169,13 @@ public class PlanPresenter implements Presenter{
                 plan.setName(nameField.getText());
                 setPlanNameInAppBar(nameField.getText());
                 GluonApplication.getView(GluonApplication.PLANS_VIEW).getPresenter().update();
+
                 popupView.hide();
             }
         });
 
         HBox btnBox = new HBox(returnBtn,acceptBtn);
-        btnBox.setSpacing(10);
+        btnBox.setSpacing(5);
 
         VBox vBox = new VBox(nameField, btnBox);
         vBox.setSpacing(10);

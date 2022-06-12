@@ -43,7 +43,7 @@ CREATE TABLE "TIPS"
     CONSTRAINT "FK_69" FOREIGN KEY ("exercise_id") REFERENCES "EXERCISE_DETAILS" ("id")
 );
 
-CREATE TABLE "USER"
+CREATE TABLE "USERS"
 (
     "login"    varchar(45) NOT NULL ,
     "password" varchar(45) NOT NULL ,
@@ -52,23 +52,25 @@ CREATE TABLE "USER"
     PRIMARY KEY ("login")
 );
 
-CREATE TABLE "PLAN"
+CREATE TABLE "PLANS"
 (
     "id"   varchar(45) NOT NULL ,
     "user" varchar(45) NOT NULL ,
+    "name" varchar(45) NOT NULL ,
 
     PRIMARY KEY ("id"),
-    CONSTRAINT "FK_136" FOREIGN KEY ("user") REFERENCES "USER" ("login")
+    CONSTRAINT "FK_136" FOREIGN KEY ("user") REFERENCES "USERS" ("login") ON DELETE CASCADE
 );
 
-CREATE TABLE "WORKOUT"
+CREATE TABLE "WORKOUTS"
 (
     "workout_id" varchar(45) NOT NULL ,
     "date"       datetime NOT NULL ,
     "plan_id"    varchar(45) NOT NULL ,
+    "workout_name" varchar(45) NOT NULL ,
 
     PRIMARY KEY ("workout_id"),
-    CONSTRAINT "FK_126" FOREIGN KEY ("plan_id") REFERENCES "PLAN" ("id")
+    CONSTRAINT "FK_126" FOREIGN KEY ("plan_id") REFERENCES "PLANS" ("id") ON DELETE CASCADE
 );
 
 CREATE TABLE "WORKOUT_DETAILS"
@@ -82,7 +84,7 @@ CREATE TABLE "WORKOUT_DETAILS"
     "reps_done"    numeric NOT NULL ,
 
     PRIMARY KEY ("exercise_id", "workout_id", "exercise_pos", "series_pos"),
-    CONSTRAINT "FK_105" FOREIGN KEY ("exercise_id") REFERENCES "EXERCISE_DETAILS" ("id"),
-    CONSTRAINT "FK_109" FOREIGN KEY ("workout_id") REFERENCES "WORKOUT" ("workout_id")
+    CONSTRAINT "FK_105" FOREIGN KEY ("exercise_id") REFERENCES "EXERCISE_DETAILS" ("id") ON DELETE CASCADE,
+    CONSTRAINT "FK_109" FOREIGN KEY ("workout_id") REFERENCES "WORKOUTS" ("workout_id") ON DELETE CASCADE
 );
 

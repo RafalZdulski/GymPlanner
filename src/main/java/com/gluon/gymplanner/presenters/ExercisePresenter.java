@@ -1,7 +1,7 @@
 package com.gluon.gymplanner.presenters;
 
 import com.gluon.gymplanner.dtos.ExerciseDetails;
-import com.gluon.gymplanner.jdbc.h2JDBC;
+import com.gluon.gymplanner.jdbc.ExerciseJDBCImpl;
 import com.gluonhq.charm.glisten.animation.BounceInRightTransition;
 import com.gluonhq.charm.glisten.mvc.View;
 import javafx.collections.FXCollections;
@@ -69,13 +69,13 @@ public class ExercisePresenter implements Presenter{
 
 
     void setExecution() {
-        List<String> execution = new h2JDBC().getExerciseExecution(exercise.getId());
+        List<String> execution = new ExerciseJDBCImpl().getExerciseExecution(exercise.getId());
         executionList.setItems(FXCollections.observableList(execution));
         executionList.setCellFactory(this.getTipsOrExecutionFactory());
     }
 
     void setTips() {
-        List<String> tips = new h2JDBC().getExerciseTips(exercise.getId());
+        List<String> tips = new ExerciseJDBCImpl().getExerciseTips(exercise.getId());
         tipsList.setItems(FXCollections.observableList(tips));
         tipsList.setCellFactory(this.getTipsOrExecutionFactory());
     }

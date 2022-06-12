@@ -4,7 +4,7 @@ import com.gluon.gymplanner.GluonApplication;
 import com.gluon.gymplanner.graphic.search.filters.FilterPillsDisplay;
 import com.gluon.gymplanner.graphic.search.filters.FilterWindow;
 import com.gluon.gymplanner.graphic.search.filters.FilterWrap;
-import com.gluon.gymplanner.jdbc.h2JDBC;
+import com.gluon.gymplanner.jdbc.ExerciseJDBCImpl;
 import com.gluonhq.charm.glisten.control.TextField;
 import com.gluonhq.charm.glisten.control.ToggleButtonGroup;
 import com.gluonhq.charm.glisten.layout.Layer;
@@ -81,7 +81,7 @@ public class SearchPresenter implements Presenter{
 //        System.out.println("\tforce: " + forceToggleBtns.getToggles().filtered(ToggleButton::isSelected).get(0).getId());
 //        System.out.println("\tparts: " + bodyParts.stream().filter(FilterWrap::getCheckValue).map(FilterWrap::getItem).collect(Collectors.joining(", ")));
 
-        exercisesDBPresenter.setExerciseList(new h2JDBC().getFiltered(
+        exercisesDBPresenter.setExerciseList(new ExerciseJDBCImpl().getFiltered(
                 nameField.getText(),
                 mechToggleBtns.getToggles().filtered(ToggleButton::isSelected).get(0).getId(),
                 forceToggleBtns.getToggles().filtered(ToggleButton::isSelected).get(0).getId(),
@@ -91,7 +91,7 @@ public class SearchPresenter implements Presenter{
 
     public void initialize() {
 //        secondary.setShowTransitionFactory(BounceInRightTransition::new);
-        bodyParts = new h2JDBC().getAllBodyParts().stream().map(FilterWrap::new).collect(Collectors.toList());
+        bodyParts = new ExerciseJDBCImpl().getAllBodyParts().stream().map(FilterWrap::new).collect(Collectors.toList());
         FilterPillsDisplay bodyPartsPills = new FilterPillsDisplay(bodyParts);
         GridPane.setColumnSpan(bodyPartsPills,3);
         gridPane.add(bodyPartsPills, 0, 4);

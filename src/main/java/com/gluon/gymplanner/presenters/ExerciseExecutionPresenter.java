@@ -69,6 +69,11 @@ public class ExerciseExecutionPresenter implements Presenter{
         onSwitching();
     }
 
+    @FXML
+    void goToNextSeries(){
+
+    }
+
     public void setWorkout(Workout workout){
         this.workout = workout;
         currentExercise = workout.getTrainingList().get(0);

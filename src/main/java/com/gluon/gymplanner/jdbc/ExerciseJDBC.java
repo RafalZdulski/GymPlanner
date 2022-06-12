@@ -5,9 +5,13 @@ import com.gluon.gymplanner.dtos.ExerciseDetails;
 import java.util.List;
 
 public interface ExerciseJDBC {
-    List<ExerciseDetails> getAll();
+    List<ExerciseDetails> getAllExercises();
+
+    ExerciseDetails getExercise(String exerciseId);
 
     List<String> getAllBodyParts();
+
+    String[] getTargetMuscles(String exercise_id);
 
     List<String> getExerciseExecution(String exercise_id);
 

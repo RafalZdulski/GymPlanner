@@ -167,7 +167,7 @@ public class WorkoutPresenter implements Presenter{
         });
 
         HBox btnBox = new HBox(returnBtn,acceptBtn);
-        btnBox.setSpacing(10);
+        btnBox.setSpacing(5);
 
 
         VBox vBox = new VBox(nameField, btnBox);

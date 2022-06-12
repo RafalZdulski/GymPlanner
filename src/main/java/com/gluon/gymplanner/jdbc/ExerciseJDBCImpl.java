@@ -1,5 +1,6 @@
 package com.gluon.gymplanner.jdbc;
 
+import com.gluon.gymplanner.config.PropertyManager;
 import com.gluon.gymplanner.dtos.ExerciseDetails;
 
 import java.sql.*;
@@ -8,34 +9,35 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class h2JDBC implements ExerciseJDBC {
-    //TODO move it to configuration file
-    final String IMAGES_DIRECTORY = "/com/gluon/gymplanner/database/exercises/images/";
-    final String JDBC_DRIVER = "org.h2.Driver";
-    final String DB_URL = "jdbc:h2:file:./src/main/resources/com/gluon/gymplanner/database/gymplandb";
-    final String DB_CREATE_SCRIPT = "./src/main/resources/com/gluon/gymplanner/database/sql/create-tables.sql";
-    final String DB_POPULATE_SCRIPT = "./src/main/resources/com/gluon/gymplanner/database/sql/populate-exercises.sql";
+public class ExerciseJDBCImpl implements ExerciseJDBC {
+
+    private final String IMAGES_DIRECTORY = PropertyManager.getInstance().getProperty("EXERCISES_IMAGES_DIRECTORY");
+    private final String JDBC_DRIVER = PropertyManager.getInstance().getProperty("JDBC_DRIVER");
+    private final String DB_URL = PropertyManager.getInstance().getProperty("DB_URL");
+    private final String DB_CREATE_SCRIPT = PropertyManager.getInstance().getProperty("DB_CREATE_SCRIPT");
+    private final String DB_POPULATE_SCRIPT = PropertyManager.getInstance().getProperty("DB_POPULATE_EXERCISES_DETAILS_SCRIPT");
 
     //  Database credentials
-    final String USER = "";
-    final String PASS = "";
+    private final String DB_USER = "";
+    private final String DB_PASS = "";
 
-    //only for testing
-    public static void main(String[] a) {
-        //new h2JDBC().getFiltered("a","isolation","pull",new String[]{"back"}).forEach(System.out::println);
-    }
+    // names of tables in database
+    private final String EXERCISE_DETAILS = "EXERCISE_DETAILS";
+    private final String EXECUTION = "EXECUTION";
+    private final String TARGET_MUSCLES = "TARGET_MUSCLES";
+    private final String TIPS = "TIPS";
 
     @Override
-    public List<ExerciseDetails> getAll() {
+    public List<ExerciseDetails> getAllExercises() {
         List<ExerciseDetails> retList = new ArrayList<>();
         Connection conn = null;
         Statement stmt = null;
         try {
             Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             stmt = conn.createStatement();
 
-            String sql = "SELECT * FROM EXERCISE_DETAILS";
+            String sql = "SELECT * FROM " + EXERCISE_DETAILS;
 
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -58,13 +60,50 @@ public class h2JDBC implements ExerciseJDBC {
             stmt.close();
             conn.close();
 
-        }catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }finally {
-            return retList;
         }
+        return retList;
+    }
+
+    @Override
+    public ExerciseDetails getExercise(String exerciseId) {
+        ExerciseDetails details = null;
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
+            stmt = conn.createStatement();
+
+            String sql = "SELECT * FROM " + EXERCISE_DETAILS +
+                    " WHERE \"id\" = '" + exerciseId + "';";
+
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String name = rs.getString("name");
+                String pic_url = IMAGES_DIRECTORY + rs.getString("pic_url");
+                String mechanics = rs.getString("mechanics");
+                String force = rs.getString("force");
+                String primaryBodyPart =  rs.getString("primary_body_part");
+                String secondaryBodyPart = rs.getString("secondary_body_part");
+                String[] bodyParts = null;
+                if (secondaryBodyPart != null)
+                    bodyParts = new String[]{primaryBodyPart, secondaryBodyPart};
+                else
+                    bodyParts = new String[]{primaryBodyPart};
+                String[] targetMuscles = getTargetMuscles(id);
+
+                details = new ExerciseDetails(id, name, pic_url, bodyParts, targetMuscles, mechanics, force);
+            }
+            stmt.close();
+            conn.close();
+
+        }catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return details;
     }
 
     @Override
@@ -74,10 +113,11 @@ public class h2JDBC implements ExerciseJDBC {
         Statement stmt = null;
         try {
             Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             stmt = conn.createStatement();
 
-            String sql = "SELECT DISTINCT \"primary_body_part\" from exercise_details order by \"primary_body_part\";";
+            String sql = "SELECT DISTINCT \"primary_body_part\" from " +
+                    EXERCISE_DETAILS + " order by \"primary_body_part\";";
 
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -86,25 +126,25 @@ public class h2JDBC implements ExerciseJDBC {
             }
             stmt.close();
             conn.close();
-        }catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }finally {
-            return retList;
         }
+        return retList;
     }
 
-    private String[] getTargetMuscles(String exercise_id) {
+    @Override
+    public String[] getTargetMuscles(String exercise_id) {
         List<String> retList = new ArrayList<>();
         Connection conn = null;
         Statement stmt = null;
         try {
             Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             stmt = conn.createStatement();
 
-            String sql = "SELECT \"muscle\" FROM TARGET_MUSCLES WHERE \"exercise_id\" = '" + exercise_id + "'";
+            String sql = "SELECT \"muscle\" FROM " +
+                    TARGET_MUSCLES +
+                    " WHERE \"exercise_id\" = '" + exercise_id + "'";
 
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -113,13 +153,10 @@ public class h2JDBC implements ExerciseJDBC {
             }
             stmt.close();
             conn.close();
-        }catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }finally {
-            return retList.toArray(String[]::new);
         }
+        return retList.toArray(String[]::new);
     }
 
     @Override
@@ -129,10 +166,12 @@ public class h2JDBC implements ExerciseJDBC {
         Statement stmt = null;
         try {
             Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             stmt = conn.createStatement();
 
-            String sql = "SELECT \"text\" FROM EXECUTION WHERE \"exercise_id\" = '" + exercise_id + "' ORDER BY \"position\"";
+            String sql = "SELECT \"text\" FROM " + EXECUTION +
+                    " WHERE \"exercise_id\" = '" + exercise_id +
+                    "' ORDER BY \"position\"";
 
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -141,13 +180,10 @@ public class h2JDBC implements ExerciseJDBC {
             }
             stmt.close();
             conn.close();
-        }catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }finally {
-            return retList;
         }
+        return retList;
     }
 
     @Override
@@ -157,10 +193,12 @@ public class h2JDBC implements ExerciseJDBC {
         Statement stmt = null;
         try {
             Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             stmt = conn.createStatement();
 
-            String sql = "SELECT \"tip\" FROM TIPS WHERE \"exercise_id\" = '" + exercise_id + "' ORDER BY \"id\"";
+            String sql = "SELECT \"tip\" FROM " + TIPS +
+                    " WHERE \"exercise_id\" = '" + exercise_id +
+                    "' ORDER BY \"id\"";
 
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -169,13 +207,10 @@ public class h2JDBC implements ExerciseJDBC {
             }
             stmt.close();
             conn.close();
-        }catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }finally {
-            return retList;
         }
+        return retList;
     }
 
     @Override
@@ -185,10 +220,11 @@ public class h2JDBC implements ExerciseJDBC {
         Statement stmt = null;
         try {
             Class.forName(JDBC_DRIVER);
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             stmt = conn.createStatement();
 
-            StringBuilder sql = new StringBuilder("SELECT * FROM exercise_details ");
+            StringBuilder sql = new StringBuilder("SELECT * FROM ")
+                    .append(EXERCISE_DETAILS).append(" ");
             boolean isFirstFilter = true;
             if (name != null && !name.isBlank() ) {
                 isFirstFilter = false;
@@ -237,12 +273,9 @@ public class h2JDBC implements ExerciseJDBC {
             stmt.close();
             conn.close();
 
-        }catch (SQLException e) {
+        }catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }finally {
-            return retList;
         }
+        return retList;
     }
 }

@@ -38,7 +38,7 @@ public class DrawerManager {
         final Item trainingPlansItem = new ViewItem("Training Plans",
                 MaterialDesignIcon.APPS.graphic(), PLANS_VIEW);
 
-        final Item workoutsItem = new ViewItem("Your Favourites",
+        final Item workoutsItem = new ViewItem("Current Plan",
                 MaterialDesignIcon.FAVORITE.graphic(), PLAN_VIEW);
 
         final Item summaryItem = new ViewItem("Summary",

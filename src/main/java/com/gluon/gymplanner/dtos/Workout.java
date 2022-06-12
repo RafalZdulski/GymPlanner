@@ -1,5 +1,7 @@
 package com.gluon.gymplanner.dtos;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,15 +23,23 @@ public class Workout {
     private List<ExerciseTraining> trainingList;
 
     public Workout(String name){
+        this.id = name + "-" + Timestamp.from(Instant.now()).hashCode();
         this.name= name;
-        trainingList = new ArrayList<>();
-        date = LocalDateTime.now();
+        this.trainingList = new ArrayList<>();
+        this.date = LocalDateTime.now();
     }
 
     public Workout(){
-        name = "new workout";
-        trainingList = new ArrayList<>();
-        date = LocalDateTime.now();
+        this.name = "new workout";
+        this.id = name + "-" + Timestamp.from(Instant.now()).hashCode();
+        this.trainingList = new ArrayList<>();
+        this.date = LocalDateTime.now();
+    }
+
+    public Workout(String id, List<ExerciseTraining> trainingList){
+        this.id = id;
+        this.name = id.substring(0,id.lastIndexOf('-'));
+        this.trainingList = trainingList;
     }
 
     public void addExercise(ExerciseTraining exercise){
@@ -69,5 +79,13 @@ public class Workout {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public String getId(){
+        return this.id;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }

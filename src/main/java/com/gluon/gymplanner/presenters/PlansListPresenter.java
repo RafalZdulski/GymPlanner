@@ -2,6 +2,7 @@ package com.gluon.gymplanner.presenters;
 
 import com.gluon.gymplanner.GluonApplication;
 import com.gluon.gymplanner.dtos.Plan;
+import com.gluon.gymplanner.jdbc.JDBCProxy;
 import com.gluonhq.charm.glisten.animation.BounceInRightTransition;
 import com.gluonhq.charm.glisten.application.AppManager;
 import com.gluonhq.charm.glisten.control.AppBar;
@@ -29,7 +30,7 @@ public class PlansListPresenter implements Presenter {
     private static int planCounter = 1;
 
     //TODO ADD plans should be acquired from database
-    private final List<Plan> plans = new ArrayList<>();
+    private final List<Plan> plans = JDBCProxy.getInstance().getUserJDBC().getPlans("default");
 
     @FXML
     private View secondary;
@@ -58,7 +59,8 @@ public class PlansListPresenter implements Presenter {
                 appBar.setTitleText("Training Plans");
                 appBar.getActionItems().add(MaterialDesignIcon.PERSON.button(e ->
                         //TODO ADD: add person panel
-                        System.out.println("go to user panel")));
+                        System.out.println("go to user panel")
+                ));
             }
         });
         update();

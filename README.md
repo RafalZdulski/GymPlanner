@@ -1,3 +1,28 @@
+# Gym Planner
+java gluon application for planning and monitoring gym exercises and progress. <br>
+it was school project done as fast as possible, so it is far from "perfect".
+
+## Database
+SQL h2 database used in embedded mode <br>
+![](readme-pics/db-tables.png) <br>
+Database contains 94 different exercises activating all body parts. <br>
+Exercise details comes from [weighttraining.guide](https://weighttraining.guide/category/exercises/) <br>
+![](readme-pics/screen-exercise-db-table.png)
+
+## Screenshots from application
+### exercise database View 
+![](readme-pics/screen-exercise-db-view.png)
+### exercise details
+![](readme-pics/screen-exercise-details-view.png)
+### search view
+![](readme-pics/screen-search-view.png)
+### plan view and workout view
+![](readme-pics/screen-plan-view.png)
+![](readme-pics/screen-workout-view.png)
+### workout execution 
+![](readme-pics/screen-workout-execution.png)
+![](readme-pics/screen-workout-execution-end.png)
+
 # Gluon - Multi View using FXML
 
 Gluon Applications are Java application written in JavaFX.
